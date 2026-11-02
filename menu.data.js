@@ -11,8 +11,8 @@ window.MENU = {
   priceNote: true, // shows "Ceny se mohou v aplikacích lišit."
   apps: [
     { id: "wolt", name: "Wolt", url: "https://wolt.com/en/cze/prague/restaurant/imperial-pizza-1", confirmed: true },
-    { id: "foodora", name: "foodora", url: "", confirmed: false }, // TODO owner: listed? link (button shown but not clickable until url is set)
-    { id: "bolt", name: "Bolt Food", url: "", confirmed: false },  // TODO owner: listed? link (button shown but not clickable until url is set)
+    { id: "foodora", name: "foodora", url: "", confirmed: false }, // TODO owner: listed? link (set url → gold button; until then listed in the popup text line)
+    { id: "bolt", name: "Bolt Food", url: "", confirmed: false },  // TODO owner: listed? link (set url → gold button; until then listed in the popup text line)
   ],
   phone: "+420 606 810 671",
   hours: { // 0 = Sunday … 6 = Saturday; close 24 = midnight
@@ -53,13 +53,13 @@ window.MENU = {
   ],
   drinks: [
     { id: "coca-cola-0-5", name: "Coca-Cola 0,5 l", en: "Coca-Cola 0.5 l", ru: "Coca-Cola 0,5 л", price: null, photo: "media/coca-cola-0-5-l.jpeg" },
-    { id: "coca-cola-zero-0-5", name: "Coca-Cola Zero 0,5 l", en: "Coca-Cola Zero 0.5 l", ru: "Coca-Cola Zero 0,5 л", price: null, photo: "media/coca-cola-0-5-l.jpeg" },
-    { id: "fanta-0-5", name: "Fanta - pomeranč 0,5 l", en: "Fanta - orange 0.5 l", ru: "Fanta - апельсин 0,5 л", price: null, photo: "media/fanta-pomeranc-0-5-l.jpeg" },
+    { id: "coca-cola-zero-0-5", name: "Coca-Cola Zero 0,5 l", en: "Coca-Cola Zero 0.5 l", ru: "Coca-Cola Zero 0,5 л", price: null, photo: null }, // no photo: Wolt shot is regular Coke (TODO-OWNER),
+    { id: "fanta-0-5", name: "Fanta pomeranč 0,5 l", en: "Fanta orange 0.5 l", ru: "Fanta апельсин 0,5 л", price: null, photo: "media/fanta-pomeranc-0-5-l.jpeg" },
     { id: "sprite-0-5", name: "Sprite 0,5 l", en: "Sprite 0.5 l", ru: "Sprite 0,5 л", price: null, photo: "media/sprite-0-5-l.jpeg" },
     { id: "coca-cola-1-5", name: "Coca-Cola 1,5 l", en: "Coca-Cola 1.5 l", ru: "Coca-Cola 1,5 л", price: null, photo: "media/coca-cola-1-5-l.jpeg" },
-    { id: "fanta-1-5", name: "Fanta - pomeranč 1,5 l", en: "Fanta - orange 1.5 l", ru: "Fanta - апельсин 1,5 л", price: null, photo: "media/fanta-pomeranc-1-5-l.jpeg" },
+    { id: "fanta-1-5", name: "Fanta pomeranč 1,5 l", en: "Fanta orange 1.5 l", ru: "Fanta апельсин 1,5 л", price: null, photo: "media/fanta-pomeranc-1-5-l.jpeg" },
     { id: "sprite-1-5", name: "Sprite 1,5 l", en: "Sprite 1.5 l", ru: "Sprite 1,5 л", price: null, photo: "media/sprite-1-5-l.jpeg" },
-    { id: "ice-tea-citron", name: "Ice Tea Lipton - citron 0,5 l", en: "Ice Tea Lipton - lemon 0.5 l", ru: "Ice Tea Lipton - лимон 0,5 л", price: null, photo: "media/ice-tea-lipton-citron-0-5-l.jpeg" },
-    { id: "ice-tea-broskev", name: "Ice Tea Lipton - broskev 0,5 l", en: "Ice Tea Lipton - peach 0.5 l", ru: "Ice Tea Lipton - персик 0,5 л", price: null, photo: "media/ice-tea-lipton-broskev-0-5-l.jpeg" },
+    { id: "ice-tea-citron", name: "Ice Tea Lipton citron 0,5 l", en: "Ice Tea Lipton lemon 0.5 l", ru: "Ice Tea Lipton лимон 0,5 л", price: null, photo: "media/ice-tea-lipton-citron-0-5-l.jpeg" },
+    { id: "ice-tea-broskev", name: "Ice Tea Lipton broskev 0,5 l", en: "Ice Tea Lipton peach 0.5 l", ru: "Ice Tea Lipton персик 0,5 л", price: null, photo: "media/ice-tea-lipton-broskev-0-5-l.jpeg" },
   ],
 };

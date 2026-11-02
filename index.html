@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Imperial Pizza — křupavá pizza s rozvozem po Praze 4, od 219 Kč</title>
-<meta name="description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes Wolt. Pá a So do půlnoci.">
+<meta name="description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes aplikace. Pá a So do půlnoci.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&display=swap">
@@ -19,7 +19,6 @@
   --color-line: #4A3526;
   --color-gold: #C9A029;
   --color-gold-hi: #DDB93F;
-  --color-gold-sel: #A8872A; /* selected filter (tabs, 32/45): a little darker than action buttons so Objednat stands out */
   --color-cream: #F3E7D3;
   --color-muted: #BCA88C;
   --color-tomato: #E0502F;
@@ -105,10 +104,10 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 /* segmented 32 / 45 */
 .seg { display: inline-flex; border: 1px solid var(--color-gold); }
 .seg button {
-  white-space: nowrap; min-height: 2.75rem; min-width: 3.25rem; padding: 0 var(--space-3); border: 0; background: none; color: var(--color-gold); cursor: pointer;
+  white-space: nowrap; min-height: 2.75rem; min-width: 3.25rem; padding: 0 var(--space-3); border: 0; background: none; color: var(--color-cream); cursor: pointer;
   font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.25rem; text-transform: uppercase; line-height: 1;
 }
-.seg button[aria-pressed="true"] { background: var(--color-gold-sel); color: var(--color-on-gold); }
+.seg button[aria-pressed="true"] { background: var(--color-gold); color: var(--color-on-gold); box-shadow: 0 0 0 2px var(--color-ink) inset; }
 .seg--lg button { min-height: 3.25rem; min-width: 5.5rem; font-size: 1.625rem; }
 
 /* ---------- header ---------- */
@@ -194,7 +193,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
   .hero__cta { max-width: 32rem; }
   .hero__cta .btn--gold { flex: none; padding: 0 var(--space-8); }
   .hero__tel { width: auto; padding: 0 var(--space-5); }
-  .hero__pz { position: relative; right: auto; top: auto; width: min(36rem, 40vw); justify-self: center; }
+  .hero__pz { position: relative; right: auto; top: auto; bottom: auto; width: min(36rem, 40vw, calc(100svh - var(--header-h) - 16rem)); justify-self: center; }
   .ring__tag { font-size: 1.5rem; }
   .hero__pz .ring__tag { display: flex; }
 }
@@ -214,9 +213,9 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 .menu__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); padding-top: var(--space-6); margin-bottom: var(--space-5); }
 .mtabs[hidden], .sizebar__in[hidden] { display: none; }
 .mtabs { display: flex; gap: var(--space-2); padding-block: var(--space-2); }
-.mtabs button { flex: 1; min-height: 2.75rem; padding: 0 var(--space-3); border: 1px solid var(--color-line); border-radius: var(--radius); background: none; color: var(--color-cream); cursor: pointer;
+.mtabs button { flex: 1; min-height: 2.75rem; padding: 0 var(--space-3); border: 1px solid var(--color-gold); border-radius: var(--radius); background: none; color: var(--color-cream); cursor: pointer;
   font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.25rem; text-transform: uppercase; line-height: 1; }
-.mtabs button[aria-pressed="true"] { background: var(--color-gold-sel); border-color: var(--color-gold-sel); color: var(--color-on-gold); }
+.mtabs button[aria-pressed="true"] { background: var(--color-gold); color: var(--color-on-gold); box-shadow: 0 0 0 2px var(--color-ink) inset; }
 .price--app { font-size: var(--text-fine); color: var(--color-muted); font-weight: 650; white-space: nowrap; }
 .menu__head p { color: var(--color-muted); font-size: var(--text-fine); max-width: 20rem; }
 .menu__sub { margin: var(--space-7) 0 var(--space-4); }
@@ -278,6 +277,19 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 .card--row .card__act .btn { flex: 1 0 auto; padding: 0 var(--space-3); }
 .card--row .seg button { min-width: 2.6rem; padding: 0 .35rem; font-size: 1.0625rem; }
 @media (min-width: 40rem) { .card--row { grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-5); } .card--row h3 { font-size: 2rem; } .card--row .card__act .btn { flex: none; padding: 0 var(--space-4); } .card--row .seg button { min-width: 3rem; } }
+.goods { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: var(--space-3); }
+@media (min-width: 40rem) { .goods { grid-template-columns: repeat(3, minmax(0, 1fr)); } }
+@media (min-width: 56rem) { .goods { grid-template-columns: repeat(4, minmax(0, 1fr)); } }
+@media (min-width: 80rem) { .goods { grid-template-columns: repeat(5, minmax(0, 1fr)); gap: var(--space-4); } }
+.good { display: flex; flex-direction: column; border: 1px solid var(--color-line); background: var(--color-ink); }
+.good__ph { aspect-ratio: 1; background: var(--color-panel); overflow: hidden; }
+.good__ph img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.good--pack .good__ph { background: var(--color-cream); }
+.good--pack .good__ph img { mix-blend-mode: multiply; }
+.good__body { padding: var(--space-3); display: flex; flex-direction: column; gap: .3rem; }
+.good__body h3 { font-size: 1.375rem; line-height: 1.05; }
+.good--bare .good__body { padding-block: var(--space-4); }
+.goods__cta { display: flex; width: 100%; margin-top: var(--space-4); }
 .menu__foot { padding: var(--space-5) 0 var(--space-8); color: var(--color-muted); font-size: var(--text-fine); }
 .no-prices [data-price] { display: none !important; }
 
@@ -330,6 +342,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 .fact + .fact { border-top: 1px solid color-mix(in srgb, var(--color-on-gold) 22%, transparent); }
 .fact p { margin-top: var(--space-4); max-width: 28rem; font-size: var(--text-body-lg); font-weight: 600; color: var(--color-on-gold); }
 .fact .bigword { font-size: clamp(2.4rem, 12.4vw, 4.5rem); line-height: 1.12; } /* mobile: two lines, "DO / PŮLNOCI" */
+@media (max-width: 55.99rem) { html[lang="ru"] .fact .bigword { font-size: clamp(1.75rem, 8.4vw, 4.5rem); } } /* long ru words ("В ПРИЛОЖЕНИИ") must fit */
 @media (min-width: 56rem) { .fact { min-height: clamp(20rem, 60vh, 38rem); } .fact .bigword { font-size: clamp(2.4rem, 8.6vw, 8.5rem); } .fact--end { justify-items: end; text-align: right; } }
 
 /* ---------- how ---------- */
@@ -407,7 +420,8 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 .apps { display: grid; gap: var(--space-2); list-style: none; padding: 0; }
 .app { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 4.5rem; padding: 0 var(--space-5); background: var(--color-gold); color: var(--color-on-gold); text-decoration: none; }
 .app:hover { background: var(--color-gold-hi); }
-.app--nolink, .app--nolink:hover { background: transparent; color: var(--color-muted); border: 1px solid var(--color-line); cursor: default; }
+.chooser__also { color: var(--color-cream); font-size: var(--text-fine); }
+.chooser__also[hidden] { display: none; }
 .app__name { font-family: var(--font-display); font-stretch: var(--stretch-wide); font-weight: 1000; font-size: 1.75rem; text-transform: uppercase; }
 .app__go { font-weight: 700; font-size: .9375rem; }
 .chooser__fine { font-size: var(--text-fine); color: var(--color-muted); }
@@ -421,7 +435,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
 </style>
   <meta name="robots" content="noindex">
   <meta property="og:title" content="Imperial Pizza — křupavá pizza s rozvozem po Praze 4, od 219 Kč">
-  <meta property="og:description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes Wolt. Pá a So do půlnoci.">
+  <meta property="og:description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes aplikace. Pá a So do půlnoci.">
   <meta property="og:image" content="og.jpg">
   <meta name="twitter:card" content="summary_large_image">
 </head>
@@ -506,7 +520,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     <div class="k-container" data-panel="pizza">
       <div class="menu__head">
         <h2 class="t-h2" data-i18n="menu_h">Nejoblíbenější</h2>
-        <p data-i18n="menu_p">Čtyři pizzy, které se ve Woltu objednávají nejvíc.</p>
+        <p data-i18n="menu_p">Čtyři pizzy, které lidé objednávají nejčastěji.</p>
       </div>
       <div class="pop" data-pop></div>
       <h2 class="t-h2 menu__sub" data-i18n="menu_all">Všechny pizzy</h2>
@@ -515,7 +529,8 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     </div>
     <div class="k-container" data-panel="other" hidden>
       <div class="menu__head"><h2 class="t-h2" data-other-h></h2></div>
-      <div class="rows" data-other-rows></div>
+      <div class="goods" data-other-rows></div>
+      <button class="btn btn--gold btn--xl goods__cta" type="button" data-order data-i18n="order_app">Objednat v aplikaci</button>
       <p class="menu__foot" data-i18n="menu_foot_other">Ceny najdete v aplikaci.</p>
     </div>
   </section>
@@ -566,7 +581,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       </div>
       <div class="k-container fact fact--end">
         <h2 class="bigword" data-i18n="app_w">V aplikaci</h2>
-        <p data-i18n="app_p">Objednáte ve Woltu, foodoře nebo Boltu, kde už máte adresu i platbu. Cenu dopravy a čas doručení vidíte předem.</p>
+        <p data-i18n="app_p">Objednáte v aplikaci (<span data-app-names></span>), kde už máte adresu i platbu. Cenu dopravy a čas doručení vidíte předem.</p>
       </div>
     </div>
   </section>
@@ -578,7 +593,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       <div class="how__grid">
         <ol class="steps">
           <li><span class="steps__n">1</span><div><h3 class="t-h3" data-i18n="s1_h">Vyberte pizzu a velikost</h3><p data-i18n="s1_p">32 cm pro jednoho, 45 cm, když jste dva a víc.</p></div></li>
-          <li><span class="steps__n">2</span><div><h3 class="t-h3" data-i18n="s2_h">Klikněte na Objednat</h3><p data-i18n="s2_p">Otevře se naše stránka ve Woltu. Tam vyberete, zaplatíte a zadáte adresu.</p></div></li>
+          <li><span class="steps__n">2</span><div><h3 class="t-h3" data-i18n="s2_h">Klikněte na Objednat</h3><p data-i18n="s2_p">Otevře se naše stránka v aplikaci. Tam vyberete, zaplatíte a zadáte adresu.</p></div></li>
           <li><span class="steps__n">3</span><div><h3 class="t-h3" data-i18n="s3_h">Pizza jede k vám</h3><p data-i18n="s3_p">Kurýr ji přiveze až ke dveřím. Čas doručení ukazuje aplikace.</p></div></li>
         </ol>
         <div class="how__photo"><img src="media/box-home-1.webp" alt="Otevřená krabice s pizzou na konferenčním stolku" loading="lazy" data-i18n-alt="box_alt"></div>
@@ -602,7 +617,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
         <div class="where">
           <p class="muted" data-i18n="kitchen_lbl">Kuchyně, odkud pizza vyjíždí</p>
           <p class="addr">Krejnická 2021/1<br>Praha 4 – Chodov</p>
-          <p class="muted" data-i18n="zone_p">Jsme jen rozvoz, bez výdejního okénka. Kam až vozíme, kolik stojí doprava a jaká je minimální objednávka, vám ukáže aplikace po zadání adresy.</p>
+          <p class="muted" data-i18n="zone_p">Kam až vozíme, kolik stojí doprava a jaká je minimální objednávka, vám ukáže aplikace po zadání adresy.</p>
           <p><span class="muted" data-i18n="ask">Otázka nebo velká objednávka?</span><br><a class="tel" href="tel:+420606810671">+420 606 810 671</a></p>
         </div>
       </div>
@@ -614,7 +629,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     <div class="k-container">
       <h2 class="t-h2" data-i18n="faq_h">Časté otázky</h2>
       <div class="faq__list">
-        <details><summary data-i18n="q1">Kde můžu objednat?</summary><p data-i18n="a1">Ve Woltu. Tlačítko Objednat vás přenese rovnou na naši stránku. Přímo na webu objednávky nepřijímáme.</p></details>
+        <details><summary data-i18n="q1">Kde můžu objednat?</summary><p data-i18n="a1">V některé z aplikací: <span data-app-names></span>. Tlačítko Objednat vás přenese rovnou na naši stránku. Přímo na webu objednávky nepřijímáme.</p></details>
         <details><summary data-i18n="q2">Proč je cena v aplikaci jiná?</summary><p data-i18n="a2">Tady jsou naše běžné ceny. Aplikace mívají vlastní akce a poplatky, proto se cena může lišit. Platí ta, kterou vidíte v aplikaci.</p></details>
         <details><summary data-i18n="q3">Kam vozíte a kolik stojí doprava?</summary><p data-i18n="a3">Vaříme v Praze 4 na Chodově. Zónu, cenu dopravy a minimální objednávku vám po zadání adresy ukáže aplikace.</p></details>
         <details><summary data-i18n="q4">Kde najdu alergeny?</summary><p data-i18n="a4">U každé pizzy v aplikaci. Když si nejste jistí, zavolejte nám na <a href="tel:+420606810671">+420 606 810 671</a>.</p></details>
@@ -631,7 +646,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
         <a class="wm" href="#top" aria-label="Imperial Food"><svg class="wm__svg" viewBox="0 0 124 54" aria-hidden="true"><use href="#wm-lock"/></svg></a>
         <p style="margin-top: var(--space-3)" data-i18n="ftr_was">Dříve Pizza Chef. Stejná kuchyně, nové jméno.</p>
       </div>
-      <div><h3 data-i18n="ftr_k">Kuchyně</h3><p>Krejnická 2021/1<br>148 00 Praha 4 – Chodov</p><p data-i18n="ftr_only">Jen rozvoz</p></div>
+      <div><h3 data-i18n="ftr_k">Kuchyně</h3><p>Krejnická 2021/1<br>148 00 Praha 4 – Chodov</p></div>
       <div><h3 data-i18n="ftr_h">Rozvoz</h3><p data-i18n="ftr_hours">Po–Čt a Ne 10:00–22:00<br>Pá–So 10:00–24:00</p></div>
       <div><h3 data-i18n="ftr_c">Kontakt</h3><p><a href="tel:+420606810671">+420 606 810 671</a></p><p><span data-i18n="apps_via">Objednávka přes aplikaci:</span> <span data-app-names>Wolt, foodora, Bolt Food</span></p></div>
     </div>
@@ -673,6 +688,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     </div>
     <p class="chooser__ctx" data-ctx hidden></p>
     <ul class="apps" data-apps></ul>
+    <p class="chooser__also" data-apps-also hidden></p>
     <p class="chooser__fine" data-i18n="ch_fine">Otevře se stránka Imperial Pizza v aplikaci. Pizzu i velikost vyberete tam, ceny se mohou lišit.</p>
     <p class="chooser__fine"><span data-i18n="ch_call">Raději telefonem?</span> <a href="tel:+420606810671">+420 606 810 671</a></p>
   </div>
@@ -698,7 +714,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       hook: "<b>45 cm = almost twice the pizza</b>, for just 100&nbsp;Kč more.",
       apps_via: "Order in the app:",
       size_lbl: "Size", size_hint: "<span class=\"hide-sm\">Switches the whole menu.<br></span><b>45 cm = 1.98× the area</b>", price_note: "Prices in the apps may differ.",
-      menu_h: "Most popular", menu_p: "The four pizzas people order most on Wolt.", menu_all: "All pizzas",
+      menu_h: "Most popular", menu_p: "The four pizzas people order most.", menu_all: "All pizzas",
       menu_foot: "Prices in the apps may differ. Photos show real pizzas from our menu.",
       size_word: "Nearly 2×", size_lead: "A 45 cm pizza has 1.98× the area of a 32 cm one. On every pizza in the menu it costs 100 Kč more. Flip the switch to see the difference at true scale.",
       pick_lbl: "Pizza", r_price: "Price 32 → 45 cm", r_area: "Area", r_per: "Per 100 cm²",
@@ -706,21 +722,21 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       order_this: "Order this one",
       crisp_w: "Crispy", crisp_p: "Pizza to lift your spirits. That's how we describe it, and that's how we bake it.", crisp_alt: "Close-up of a baked pizza rim",
       late_w: "Till midnight", late_p: "On Friday and Saturday we deliver until 24:00. Other days from 10:00 to 22:00.",
-      app_w: "In the app", app_p: "Order on Wolt, foodora or Bolt Food, wherever your address and payment are already saved. You see the delivery fee and time before you pay.",
+      app_w: "In the app", app_p: "Order in the app (<span data-app-names></span>), wherever your address and payment are already saved. You see the delivery fee and time before you pay.",
       how_h: "How to order", s1_h: "Pick a pizza and size", s1_p: "32 cm for one, 45 cm when there are two or more of you.",
-      s2_h: "Tap Order", s2_p: "Our page on Wolt opens. Choose, pay and enter your address there.", s3_h: "Pizza is on its way", s3_p: "A courier brings it to your door. The app shows the delivery time.",
+      s2_h: "Tap Order", s2_p: "Our page in the app opens. Choose, pay and enter your address there.", s3_h: "Pizza is on its way", s3_p: "A courier brings it to your door. The app shows the delivery time.",
       box_alt: "Open pizza box on a coffee table",
       hours_h: "When and where from", hours_cap: "Delivery hours", d_mt: "Monday to Thursday", d_fs: "Friday and Saturday", d_su: "Sunday",
-      kitchen_lbl: "The kitchen your pizza leaves from", zone_p: "Delivery only, no pick-up counter. How far we deliver, the delivery fee and the minimum order are shown in the app once you enter your address.",
+      kitchen_lbl: "The kitchen your pizza leaves from", zone_p: "How far we deliver, the delivery fee and the minimum order are shown in the app once you enter your address.",
       ask: "A question or a large order?",
       faq_h: "Questions",
-      q1: "Where can I order?", a1: "On Wolt. The Order button takes you straight to our page. We don't take orders on this website.",
+      q1: "Where can I order?", a1: "In one of the apps: <span data-app-names></span>. The Order button takes you straight to our page. We don't take orders on this website.",
       q2: "Why is the price in the app different?", a2: "These are our regular prices. Apps run their own deals and fees, so the price can differ. The price in the app is the one that counts.",
       q3: "Where do you deliver and what does it cost?", a3: "We cook in Prague 4, Chodov. The app shows the zone, delivery fee and minimum order once you enter your address.",
       q4: "Where can I find allergens?", a4: 'With each pizza in the app. If you\'re not sure, call us on <a href="tel:+420606810671">+420 606 810 671</a>.',
       q5: "Ordering for an office or a party?", a5: 'Call us in advance on <a href="tel:+420606810671">+420 606 810 671</a> and we\'ll sort it out.',
-      ftr_was: "Formerly Pizza Chef. Same kitchen, new name.", ftr_k: "Kitchen", ftr_only: "Delivery only", ftr_h: "Delivery", ftr_hours: "Mon–Thu and Sun 10:00–22:00<br>Fri–Sat 10:00–24:00", ftr_c: "Contact", ftr_fine: "Prices in the apps may differ.",
-      menu_foot_other: "Prices are shown in the app.", ch_h: "Where do you order?", ch_fine: "Imperial Pizza's page opens in the app. Choose the pizza and size there; prices may differ.", ch_call: "Prefer the phone?",
+      ftr_was: "Formerly Pizza Chef. Same kitchen, new name.", ftr_k: "Kitchen", ftr_h: "Delivery", ftr_hours: "Mon–Thu and Sun 10:00–22:00<br>Fri–Sat 10:00–24:00", ftr_c: "Contact", ftr_fine: "Prices in the apps may differ.",
+      menu_foot_other: "Prices are shown in the app.", order_app: "Order in the app", ch_h: "Where do you order?", ch_fine: "Imperial Pizza's page opens in the app. Choose the pizza and size there; prices may differ.", ch_call: "Prefer the phone?",
     },
     ru: {
       skip: "Перейти к меню", was: "раньше<br>Pizza Chef", nav_menu: "Меню", nav_size: "32 или 45", nav_how: "Как заказать", nav_hours: "Часы", nav_faq: "Вопросы",
@@ -729,7 +745,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       hook: "<b>45 см — почти вдвое больше пиццы</b>, а дороже всего на 100&nbsp;Kč.",
       apps_via: "Заказ через приложение:",
       size_lbl: "Размер", size_hint: "<span class=\"hide-sm\">Переключает всё меню.<br></span><b>45 см = 1,98× площади</b>", price_note: "Цены в приложениях могут отличаться.",
-      menu_h: "Самые популярные", menu_p: "Четыре пиццы, которые чаще всего заказывают в Wolt.", menu_all: "Все пиццы",
+      menu_h: "Самые популярные", menu_p: "Четыре пиццы, которые заказывают чаще всего.", menu_all: "Все пиццы",
       menu_foot: "Цены в приложениях могут отличаться. На фото настоящие пиццы из нашего меню.",
       size_word: "Почти 2×", size_lead: "У пиццы 45 см площадь в 1,98 раза больше, чем у 32 см. В меню она всегда дороже ровно на 100 Kč. Переключите и посмотрите разницу в реальном масштабе.",
       pick_lbl: "Пицца", r_price: "Цена 32 → 45 см", r_area: "Площадь", r_per: "За 100 см²",
@@ -737,21 +753,21 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
       order_this: "Заказать эту",
       crisp_w: "Хрустящая", crisp_p: "Пицца, которая поднимает настроение. Так мы её описываем и так печём.", crisp_alt: "Крупный план запечённого края пиццы",
       late_w: "До полуночи", late_p: "В пятницу и субботу возим до 24:00. В остальные дни с 10:00 до 22:00.",
-      app_w: "В приложении", app_p: "Заказывайте в Wolt, foodora или Bolt Food, где уже есть ваш адрес и оплата. Стоимость и время доставки видны заранее.",
+      app_w: "В приложении", app_p: "Заказывайте в приложении (<span data-app-names></span>), где уже есть ваш адрес и оплата. Стоимость и время доставки видны заранее.",
       how_h: "Как заказать", s1_h: "Выберите пиццу и размер", s1_p: "32 см на одного, 45 см, если вас двое и больше.",
-      s2_h: "Нажмите «Заказать»", s2_p: "Откроется наша страница в Wolt. Там выберете, оплатите и укажете адрес.", s3_h: "Пицца едет к вам", s3_p: "Курьер привезёт её прямо к двери. Время доставки показывает приложение.",
+      s2_h: "Нажмите «Заказать»", s2_p: "Откроется наша страница в приложении. Там выберете, оплатите и укажете адрес.", s3_h: "Пицца едет к вам", s3_p: "Курьер привезёт её прямо к двери. Время доставки показывает приложение.",
       box_alt: "Открытая коробка с пиццей на журнальном столике",
       hours_h: "Когда и откуда возим", hours_cap: "Часы доставки", d_mt: "Понедельник — четверг", d_fs: "Пятница и суббота", d_su: "Воскресенье",
-      kitchen_lbl: "Кухня, откуда выезжает пицца", zone_p: "Только доставка, без самовывоза. Куда возим, сколько стоит доставка и какой минимальный заказ, покажет приложение по вашему адресу.",
+      kitchen_lbl: "Кухня, откуда выезжает пицца", zone_p: "Куда возим, сколько стоит доставка и какой минимальный заказ, покажет приложение по вашему адресу.",
       ask: "Вопрос или большой заказ?",
       faq_h: "Вопросы",
-      q1: "Где заказать?", a1: "В Wolt. Кнопка «Заказать» ведёт прямо на нашу страницу. На сайте заказы не принимаем.",
+      q1: "Где заказать?", a1: "В одном из приложений: <span data-app-names></span>. Кнопка «Заказать» ведёт прямо на нашу страницу. На сайте заказы не принимаем.",
       q2: "Почему в приложении другая цена?", a2: "Здесь наши обычные цены. У приложений свои акции и сборы, поэтому цена может отличаться. Действует цена в приложении.",
       q3: "Куда возите и сколько стоит доставка?", a3: "Готовим в Праге 4, на Ходове. Зону, стоимость доставки и минимальный заказ приложение покажет по вашему адресу.",
       q4: "Где посмотреть аллергены?", a4: 'У каждой пиццы в приложении. Если сомневаетесь, позвоните: <a href="tel:+420606810671">+420 606 810 671</a>.',
       q5: "Заказ для офиса или праздника?", a5: 'Позвоните заранее: <a href="tel:+420606810671">+420 606 810 671</a>, договоримся.',
-      ftr_was: "Раньше Pizza Chef. Та же кухня, новое имя.", ftr_k: "Кухня", ftr_only: "Только доставка", ftr_h: "Доставка", ftr_hours: "Пн–Чт и Вс 10:00–22:00<br>Пт–Сб 10:00–24:00", ftr_c: "Контакты", ftr_fine: "Цены в приложениях могут отличаться.",
-      menu_foot_other: "Цены смотрите в приложении.", ch_h: "Где заказать?", ch_fine: "Откроется страница Imperial Pizza в приложении. Пиццу и размер выберете там, цены могут отличаться.", ch_call: "Удобнее по телефону?",
+      ftr_was: "Раньше Pizza Chef. Та же кухня, новое имя.", ftr_k: "Кухня", ftr_h: "Доставка", ftr_hours: "Пн–Чт и Вс 10:00–22:00<br>Пт–Сб 10:00–24:00", ftr_c: "Контакты", ftr_fine: "Цены в приложениях могут отличаться.",
+      menu_foot_other: "Цены смотрите в приложении.", order_app: "Заказать в приложении", ch_h: "Где заказать?", ch_fine: "Откроется страница Imperial Pizza в приложении. Пиццу и размер выберете там, цены могут отличаться.", ch_call: "Удобнее по телефону?",
     },
   };
   const T = { // strings built in JS
@@ -784,7 +800,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     $(".lang-sel").value = l;
     $$("[data-set-size]").forEach((b) => (b.textContent = b.dataset.setSize + (l === "ru" ? " см" : " cm")));
     $$(".week th").forEach((th) => th.dataset.today = T[l].today);
-    renderMenu(); renderPick(); status(); prices();
+    renderMenu(); renderPick(); status(); prices(); renderAlso();
   }
 
   /* ---------- prices / apps ---------- */
@@ -829,12 +845,11 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
   }
   const itemName = (p) => (lang === "cs" ? p.name : p[lang] || p.name);
   function itemCard(p) {
-    return `<article class="card card--row" data-id="${p.id}">
-      <div class="card__photo"><div class="pz"><span class="pz__ghost"></span><div class="disc"><img src="${p.photo}" alt="${itemName(p)}" loading="lazy" width="1200" height="675"></div></div></div>
-      <div class="card__body">
-        <div class="card__head"><h3 class="t-h3">${itemName(p)}</h3>${p.price == null ? `<span class="price--app">${T[lang].inapp}</span>` : `<span class="price"><span class="price__num">${p.price}</span><span class="price__cur">Kč</span></span>`}</div>
-        <div class="card__act"><button class="btn btn--gold btn--sm" type="button" data-order="${p.id}">${T[lang].order}</button></div>
-      </div></article>`;
+    const name = itemName(p);
+    const pr = p.price == null ? `<span class="price--app">${T[lang].inapp}</span>` : `<span class="price"><span class="price__num">${p.price}</span><span class="price__cur">Kč</span></span>`;
+    return `<article class="good${p.photo ? "" : " good--bare"} good--pack" data-id="${p.id}">
+      ${p.photo ? `<div class="good__ph"><img src="${p.photo}" alt="${name}" loading="lazy" width="1200" height="675"></div>` : ""}
+      <div class="good__body"><h3 class="t-h3">${name.replace(/Coca-Cola/g, '<span style="white-space:nowrap">Coca-Cola</span>')}</h3>${pr}</div></article>`;
   }
   const CATS = ["pizza", "sides", "drinks"].filter((c) => (c === "pizza" ? M.pizzas : M[c] || []).length);
   let tab = CATS[0];
@@ -848,8 +863,7 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
     if (tab !== "pizza") {
       $("[data-other-h]").textContent = T[lang].tab[tab];
       $("[data-other-rows]").innerHTML = M[tab].map(itemCard).join("");
-      $$("[data-other-rows] .card").forEach((c) => c.classList.add("is-in"));
-    }
+          }
   }
   let io;
   function renderMenu() {
@@ -922,7 +936,21 @@ a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
   const dlg = $("#order");
   $("[data-apps]").innerHTML = M.apps.map((a) => a.url
     ? `<li><a class="app" href="${a.url}" target="_blank" rel="noopener"><span class="app__name">${a.name}</span><span class="app__go">${lang === "cs" ? "otevřít" : lang === "ru" ? "открыть" : "open"}</span></a></li>`
-    : `<li><span class="app app--nolink" aria-disabled="true"><span class="app__name">${a.name}</span></span></li>`).join(""); // no url yet (TODO owner): shown, not clickable
+    : "").join(""); // apps without url (TODO owner) are named in the text line below, not shown as buttons
+  const ALSO = {
+    cs: { f: (l) => `Najdete nás i ${l}.`, prep: { wolt: ["ve", "Woltu"], foodora: ["ve", "foodoře"], bolt: ["v", "Bolt Food"] }, and: " a " },
+    en: { f: (l) => `We're also on ${l}.`, and: " and " },
+    ru: { f: (l) => `Мы есть и в ${l}.`, and: " и " },
+  };
+  function renderAlso() {
+    const el = $("[data-apps-also]");
+    const miss = M.apps.filter((a) => !a.url);
+    el.hidden = !miss.length;
+    if (!miss.length) return;
+    const A = ALSO[lang];
+    const names = lang === "cs" ? miss.map((a, i) => { const f = A.prep[a.id] || ["v", a.name]; return i ? f[1] : f.join(" "); }) : miss.map((a) => a.name);
+    el.textContent = A.f(names.join(A.and));
+  }
   function openOrder(id) {
     const ctx = $("[data-ctx]");
     if (id) {
