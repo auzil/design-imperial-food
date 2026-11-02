@@ -1,0 +1,961 @@
+<!doctype html>
+<html data-kit-panel="client" lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Imperial Pizza — křupavá pizza s rozvozem po Praze 4, od 219 Kč</title>
+<meta name="description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes Wolt. Pá a So do půlnoci.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Forum&display=swap">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Roboto+Flex:opsz,wdth,wght@8..144,25..151,100..1000&display=swap">
+<link rel="preload" as="image" href="media/messicana-45cm.webp">
+<link rel="stylesheet" href="kit/kit.css">
+<style>
+:root {
+  /* colour */
+  --color-ink: #160F0A;
+  --color-panel: #362318;
+  --color-line: #4A3526;
+  --color-gold: #C9A029;
+  --color-gold-hi: #DDB93F;
+  --color-gold-sel: #A8872A; /* selected filter (tabs, 32/45): a little darker than action buttons so Objednat stands out */
+  --color-cream: #F3E7D3;
+  --color-muted: #BCA88C;
+  --color-tomato: #E0502F;
+  --color-on-gold: #1A120C;
+
+  /* type */
+  --font-sans: "Roboto Flex", system-ui, sans-serif;
+  --font-display: "Roboto Flex", "Arial Narrow", sans-serif;
+  --stretch-condensed: 30%;
+  --stretch-wide: 151%;
+  --text-display: clamp(3.25rem, 15.2vw, 6rem);
+  --text-display--line-height: 1;
+  --text-display--letter-spacing: 0;
+  --text-display--font-weight: 900;
+  --text-h2: clamp(2.75rem, 6vw, 5.5rem);
+  --text-h2--line-height: 1;
+  --text-h2--letter-spacing: 0;
+  --text-h2--font-weight: 900;
+  --text-h3: clamp(1.5rem, 2.1vw, 2rem);
+  --text-h3--line-height: .95;
+  --text-h3--letter-spacing: .005em;
+  --text-h3--font-weight: 850;
+  --text-bigword: clamp(2.6rem, 11.5vw, 9.5rem);
+  --text-price: clamp(4.25rem, 8vw, 7.5rem);
+  --text-price-card: clamp(2.25rem, 3vw, 2.75rem);
+  --text-body-lg: clamp(1.125rem, 1.4vw, 1.375rem);
+  --text-body-lg--line-height: 1.4;
+  --text-body: 1.0625rem;
+  --text-body--line-height: 1.5;
+  --text-ui: 1rem;
+  --text-ui--font-weight: 700;
+  --text-fine: .9375rem;
+
+  /* layout */
+  --gutter: clamp(1rem, 3.2vw, 2.75rem);
+  --container-page: 88rem;
+  --container-content: 38rem;
+  --header-h: 3.75rem;
+  --radius: 0;
+  --space-1: .25rem;
+  --space-2: .5rem;
+  --space-3: .75rem;
+  --space-4: 1rem;
+  --space-5: 1.5rem;
+  --space-6: 2rem;
+  --space-7: 3rem;
+  --space-8: clamp(4rem, 8vw, 7.5rem);
+  --ease-out-expo: cubic-bezier(.16, 1, .3, 1);
+}
+@media (min-width: 64rem) { :root { --header-h: 4.75rem; --text-display: clamp(4.5rem, 8.4vw, 8.25rem); } }
+
+/* ---------- base ---------- */
+html { background: var(--color-ink); color: var(--color-cream); scroll-behavior: smooth; }
+body { background: var(--color-ink); font-stretch: 100%; overflow-x: clip; }
+body::after { /* grain, like pizzburg's mottled field */
+  content: ""; position: fixed; inset: 0; z-index: 45; pointer-events: none; opacity: .09; mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='220' height='220'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+::selection { background: var(--color-gold); color: var(--color-on-gold); }
+a { text-decoration-thickness: 1px; text-underline-offset: .2em; }
+.cond { font-family: var(--font-display); font-stretch: var(--stretch-condensed); text-transform: uppercase; }
+.wide { font-family: var(--font-display); font-stretch: var(--stretch-wide); text-transform: uppercase; }
+.t-display, .t-h2, .t-h3 { font-stretch: var(--stretch-condensed); text-transform: uppercase; }
+.gold { color: var(--color-gold); }
+.muted { color: var(--color-muted); }
+.icon { width: 1.25em; height: 1.25em; flex: none; stroke: currentColor; fill: none; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+/* buttons: square, flat */
+.btn {
+  display: inline-flex; align-items: center; justify-content: center; gap: var(--space-2);
+  min-height: 3rem; padding: 0 var(--space-5); border: 1px solid transparent; border-radius: var(--radius);
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase;
+  font-size: 1.375rem; letter-spacing: .02em; line-height: 1; text-decoration: none; cursor: pointer; background: none;
+  transition: background-color .2s, color .2s, border-color .2s;
+}
+.btn--gold { background: var(--color-gold); color: var(--color-on-gold); }
+.btn--gold:hover { background: var(--color-gold-hi); }
+.btn--line { border-color: var(--color-line); color: var(--color-cream); }
+.btn--line:hover { border-color: var(--color-gold); color: var(--color-gold); }
+.btn--xl { min-height: 3.75rem; font-size: 1.75rem; padding: 0 var(--space-6); }
+.btn--sm { min-height: 2.75rem; font-size: 1.125rem; padding: 0 var(--space-4); }
+
+/* segmented 32 / 45 */
+.seg { display: inline-flex; border: 1px solid var(--color-gold); }
+.seg button {
+  white-space: nowrap; min-height: 2.75rem; min-width: 3.25rem; padding: 0 var(--space-3); border: 0; background: none; color: var(--color-gold); cursor: pointer;
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.25rem; text-transform: uppercase; line-height: 1;
+}
+.seg button[aria-pressed="true"] { background: var(--color-gold-sel); color: var(--color-on-gold); }
+.seg--lg button { min-height: 3.25rem; min-width: 5.5rem; font-size: 1.625rem; }
+
+/* ---------- header ---------- */
+.hdr { position: sticky; top: 0; z-index: 40; height: var(--header-h); background: var(--color-ink); border-bottom: 1px solid var(--color-line); }
+.hdr__in { height: 100%; display: flex; align-items: center; gap: var(--space-4); }
+.wm { display: flex; align-items: center; gap: var(--space-3); text-decoration: none; color: var(--color-gold); }
+.wm svg { width: 6.25rem; height: auto; overflow: visible; }
+.wm text { font-family: var(--font-display); font-stretch: var(--stretch-wide); font-weight: 1000; fill: currentColor; }
+.wm__was { font-size: .75rem; line-height: 1.15; color: var(--color-muted); }
+.hdr__nav { display: none; gap: var(--space-5); margin-left: var(--space-6); }
+.hdr__nav a { text-decoration: none; font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; text-transform: uppercase; font-size: 1.25rem; color: var(--color-cream); }
+.hdr__nav a:hover { color: var(--color-gold); }
+.hdr__end { margin-left: auto; display: flex; align-items: center; gap: var(--space-3); }
+.hdr__tel { display: none; text-decoration: none; font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.375rem; color: var(--color-cream); white-space: nowrap; }
+.hdr__tel:hover { color: var(--color-gold); }
+.lang { display: none; }
+.lang button { min-width: 2.5rem; min-height: 2.75rem; border: 0; background: none; color: var(--color-muted); cursor: pointer; font-weight: 700; font-size: .875rem; }
+.lang button[aria-pressed="true"] { color: var(--color-gold); text-decoration: underline; text-underline-offset: .35em; }
+.lang-sel { appearance: none; min-height: 2.75rem; padding: 0 var(--space-3); border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-ink); color: var(--color-cream); font-weight: 700; font-size: .9375rem; }
+.burger { width: 2.75rem; height: 2.75rem; display: grid; place-items: center; border: 0; background: none; color: var(--color-cream); cursor: pointer; }
+.hdr__order { display: none; }
+@media (min-width: 64rem) {
+  .wm svg { width: 7.75rem; }
+  .hdr__tel, .lang, .hdr__order { display: inline-flex; }
+  .lang-sel, .burger { display: none; }
+}
+@media (min-width: 80rem) { .hdr__nav { display: flex; } }
+@media (max-width: 22.4rem) { .wm__was { display: none; } }
+
+/* wordmark: crown + IMPERIAL / FOOD, Forum caps (from c-convert-brand) */
+.wm__svg { display: block; height: auto; overflow: visible; font-family: "Forum", "Times New Roman", serif; font-weight: 400; fill: currentColor; }
+.hdr .wm__svg { width: 5.5rem; }
+.ftr .wm .wm__svg { width: 9rem; }
+.mnav .wm__svg { width: 6.5rem; }
+@media (min-width: 64rem) { .hdr .wm__svg { width: 6.5rem; } }
+
+/* ---------- hero ---------- */
+.hero { position: relative; overflow: hidden; padding: var(--space-5) 0 var(--space-6);
+  background:
+    radial-gradient(60% 70% at 88% 52%, color-mix(in srgb, var(--color-tomato) 20%, transparent), transparent 70%),
+    radial-gradient(40% 50% at 10% 10%, color-mix(in srgb, var(--color-gold) 9%, transparent), transparent 70%),
+    var(--color-ink); }
+.hero__grid { display: grid; grid-template-columns: 1fr; position: relative; }
+.status { display: inline-flex; align-items: center; gap: var(--space-2); font-weight: 650; font-size: 1rem; color: var(--color-cream); }
+.status__dot { width: .625rem; height: .625rem; border-radius: 50%; background: var(--color-gold); box-shadow: 0 0 0 0 var(--color-gold); }
+.status[data-open="true"] .status__dot { animation: pulse 2.2s infinite; }
+.status[data-open="false"] .status__dot { background: var(--color-tomato); }
+.hero__where { margin-top: .15rem; padding-left: calc(.625rem + var(--space-2)); font-size: var(--text-fine); color: var(--color-muted); }
+@keyframes pulse { 0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-gold) 60%, transparent); } 70%, 100% { box-shadow: 0 0 0 .6rem transparent; } }
+.hero h1 { margin-top: var(--space-3); color: var(--color-cream); }
+:lang(ru) .hero h1 { font-size: calc(var(--text-display) * var(--display-scale) * .84); } /* Cyrillic caps run ~25 % wider */
+.hero__offer { display: grid; grid-template-columns: 1fr auto; align-items: center; margin-top: var(--space-4); }
+.price-big { display: flex; align-items: baseline; gap: .2em; font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; text-transform: uppercase; color: var(--color-gold); line-height: .85; }
+.price-big__from { font-size: calc(var(--text-price) * .42); }
+.price-big__num { font-size: var(--text-price); font-variant-numeric: tabular-nums; }
+.price-big__cur { font-size: calc(var(--text-price) * .42); }
+.hero__hook { margin-top: var(--space-3); max-width: 21rem; font-size: var(--text-body-lg); line-height: 1.3; font-weight: 600; }
+.hero__hook b { color: var(--color-gold); font-weight: 800; }
+.hero__cta { display: flex; gap: var(--space-3); margin-top: var(--space-5); }
+.hero__cta .btn--gold { flex: 1; }
+.hero__tel { width: 3.75rem; min-height: 3.75rem; padding: 0; background: var(--color-ink); }
+.hero__apps { margin-top: var(--space-3); font-size: var(--text-fine); color: var(--color-muted); }
+.hero__apps b { color: var(--color-cream); font-weight: 700; }
+
+/* pizza disc — one treatment for every Wolt photo: circle cut at frame height, centred */
+.disc { position: relative; aspect-ratio: 1; border-radius: 50%; overflow: hidden; background: var(--color-panel); }
+.disc img { width: 100%; height: 100%; object-fit: cover; object-position: 50.4% 50%; transform: scale(1.01); }
+.hero__pz { position: absolute; z-index: 0; right: calc(-1 * var(--gutter) - 2.25rem); bottom: 7.75rem; width: 9.75rem; } /* anchored above the CTA row so it never runs under the call button */
+.hero__pz .ring__tag { display: none; }
+@media (max-width: 63.99rem) { .hero__hook { max-width: calc(100% - 9rem); } .hero__cta { position: relative; z-index: 1; } }
+.hero__pz .disc img { animation: turn 90s linear infinite; }
+@keyframes turn { to { transform: rotate(360deg) scale(1.01); } }
+.ring { position: absolute; inset: -5%; border: 1px solid var(--color-gold); border-radius: 50%; pointer-events: none; }
+.ring__tag { position: absolute; left: 6.7%; top: 75%; transform: translate(-100%, -50%); /* on the ring at 8 o'clock, rule ends on the circle */ display: flex; align-items: center; gap: var(--space-2);
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase; font-size: 1.25rem; color: var(--color-gold); white-space: nowrap; }
+.ring__tag::after { content: ""; width: 2.5rem; height: 1px; background: var(--color-gold); }
+.hero__text { position: relative; z-index: 1; }
+@media (min-width: 64rem) {
+  .hero { padding: var(--space-7) 0 var(--space-7); }
+  .hero__grid { grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr); align-items: center; min-height: min(36rem, calc(100svh - var(--header-h) - 9rem)); }
+  .hero__offer { grid-template-columns: auto; margin-top: var(--space-5); }
+  .hero__hook { max-width: 30rem; }
+  .hero__cta { max-width: 32rem; }
+  .hero__cta .btn--gold { flex: none; padding: 0 var(--space-8); }
+  .hero__tel { width: auto; padding: 0 var(--space-5); }
+  .hero__pz { position: relative; right: auto; top: auto; width: min(36rem, 40vw); justify-self: center; }
+  .ring__tag { font-size: 1.5rem; }
+  .hero__pz .ring__tag { display: flex; }
+}
+.tel-label { display: none; }
+@media (min-width: 64rem) { .tel-label { display: inline; } }
+
+/* ---------- menu ---------- */
+.menu { position: relative; background: var(--color-ink); }
+.sizebar { position: sticky; top: var(--header-h); z-index: 30; background: var(--color-ink); border-top: 1px solid var(--color-line); border-bottom: 1px solid var(--color-line); }
+.sizebar__in { display: flex; align-items: center; gap: var(--space-4); min-height: 4.25rem; padding-block: var(--space-2); }
+.sizebar__lbl { font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase; font-size: 1.375rem; }
+.sizebar__hint { font-size: var(--text-fine); color: var(--color-muted); line-height: 1.25; }
+.sizebar__hint b { color: var(--color-cream); }
+.sizebar__note { display: none; margin-left: auto; font-size: var(--text-fine); color: var(--color-muted); }
+@media (max-width: 40rem) { .sizebar__lbl, .hide-sm { display: none; } }
+@media (min-width: 64rem) { .sizebar__note { display: block; } }
+.menu__head { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); padding-top: var(--space-6); margin-bottom: var(--space-5); }
+.mtabs[hidden], .sizebar__in[hidden] { display: none; }
+.mtabs { display: flex; gap: var(--space-2); padding-block: var(--space-2); }
+.mtabs button { flex: 1; min-height: 2.75rem; padding: 0 var(--space-3); border: 1px solid var(--color-line); border-radius: var(--radius); background: none; color: var(--color-cream); cursor: pointer;
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.25rem; text-transform: uppercase; line-height: 1; }
+.mtabs button[aria-pressed="true"] { background: var(--color-gold-sel); border-color: var(--color-gold-sel); color: var(--color-on-gold); }
+.price--app { font-size: var(--text-fine); color: var(--color-muted); font-weight: 650; white-space: nowrap; }
+.menu__head p { color: var(--color-muted); font-size: var(--text-fine); max-width: 20rem; }
+.menu__sub { margin: var(--space-7) 0 var(--space-4); }
+
+/* mobile/tablet: one-card swipe strip, next card peeks; desktop: 4 columns */
+.pop { display: grid; grid-auto-flow: column; grid-auto-columns: min(82%, 21rem); gap: var(--space-3);
+  overflow-x: auto; overscroll-behavior-x: contain; scroll-snap-type: x mandatory; scrollbar-width: none;
+  margin-inline: calc(-1 * var(--gutter)); padding-inline: var(--gutter); scroll-padding-inline: var(--gutter); }
+.pop::-webkit-scrollbar { display: none; }
+.pop > .card { scroll-snap-align: start; }
+@media (min-width: 56rem) { .pop { grid-auto-flow: row; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: var(--space-5); overflow: visible; margin-inline: 0; padding-inline: 0; } }
+.card { position: relative; background: var(--color-panel); }
+.card__photo { position: relative; aspect-ratio: 1; overflow: hidden; display: grid; place-items: center;
+  background: radial-gradient(closest-side, color-mix(in srgb, var(--color-tomato) 14%, transparent), transparent); }
+.pz { position: relative; width: 100%; aspect-ratio: 1; margin: 0; } /* 45 cm fills the card edge to edge, under the name band */
+.pz .disc { width: 100%; transition: transform .55s var(--ease-out-expo); }
+[data-size="32"] .pz .disc { transform: scale(.711); }
+.pz__ghost { position: absolute; inset: 0; border: 1px dashed var(--color-gold); border-radius: 50%; opacity: 0; transition: opacity .4s; }
+[data-size="32"] .pz__ghost { opacity: .75; }
+.pz__ghost span { position: absolute; left: 50%; bottom: 0; transform: translate(-50%, 0); padding: 0 .35rem; background: var(--color-panel);
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: .9375rem; color: var(--color-gold); white-space: nowrap; }
+.kit-motion .card .disc img { transform: rotate(-16deg) scale(1.01); transition: transform 1.4s var(--ease-out-expo); }
+.kit-motion .card.is-in .disc img { transform: rotate(0) scale(1.01); }
+.card__band { position: absolute; top: 0; left: 0; right: 0; z-index: 2; padding: var(--space-3) var(--space-3) .6rem;
+  background: color-mix(in srgb, var(--color-gold) 80%, transparent); color: var(--color-on-gold);
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; text-transform: uppercase; font-size: clamp(1.375rem, 2vw, 1.75rem); line-height: .95; }
+.card__body { padding: var(--space-3) var(--space-3) var(--space-3); display: flex; flex-direction: column; gap: var(--space-2); }
+.card__ing { color: var(--color-muted); }
+.tags { display: flex; flex-wrap: wrap; gap: var(--space-3); }
+.tag { display: inline-flex; align-items: center; gap: .3rem; font-size: .875rem; font-weight: 700; }
+.tag--veg { color: var(--color-gold); }
+.tag--spicy { color: var(--color-tomato); }
+.tag .icon { width: 1rem; height: 1rem; }
+.price { display: inline-flex; align-items: baseline; font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; color: var(--color-gold); line-height: .9; white-space: nowrap; }
+.price__num { font-size: var(--text-price-card); font-variant-numeric: tabular-nums; }
+.price__cur { font-size: calc(var(--text-price-card) * .5); margin-left: .15em; text-transform: uppercase; }
+.card__buy { display: flex; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: auto; padding-top: var(--space-2); border-top: 1px solid var(--color-line); }
+.card--pop .card__body { min-height: 0; flex: 1; }
+.card--pop { display: flex; flex-direction: column; }
+.card--pop .btn { width: 100%; }
+.card--pop .seg button { min-width: 2.9rem; padding: 0 .4rem; font-size: 1.0625rem; }
+.card--pop .card__body { padding: var(--space-4); }
+.card--pop .seg button { min-width: 3.5rem; font-size: 1.25rem; }
+.card--pop .card__band { font-size: clamp(1.625rem, 2vw, 1.75rem); }
+@media (min-width: 56rem) { .card--pop .card__band { font-size: clamp(1.375rem, 2vw, 1.75rem); } }
+
+.rows { display: grid; grid-template-columns: 1fr; border-top: 1px solid var(--color-line); }
+@media (min-width: 56rem) { .rows { grid-template-columns: 1fr 1fr; column-gap: var(--space-6); } }
+.card--row { display: grid; grid-template-columns: 8.25rem minmax(0, 1fr); gap: var(--space-3); padding: var(--space-4) 0; background: none; border-bottom: 1px solid var(--color-line); }
+.card--row .card__photo { aspect-ratio: 1; align-self: start; background: none; }
+.card--row .pz { width: 100%; margin: 0; }
+.card--row .card__body { padding: 0; gap: .4rem; }
+.card--row h3 { font-size: 1.625rem; }
+.card__head { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; gap: 0 var(--space-3); }
+.card--row .price__num { font-size: 2rem; }
+.card--row .price__cur { font-size: 1rem; }
+/* buy row pinned to the bottom so it lines up across the two desktop columns */
+.card__act { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: var(--space-2); margin-top: auto; padding-top: .2rem; }
+.card--row .card__act .btn { flex: 1 0 auto; padding: 0 var(--space-3); }
+.card--row .seg button { min-width: 2.6rem; padding: 0 .35rem; font-size: 1.0625rem; }
+@media (min-width: 40rem) { .card--row { grid-template-columns: 11rem minmax(0, 1fr); gap: var(--space-5); } .card--row h3 { font-size: 2rem; } .card--row .card__act .btn { flex: none; padding: 0 var(--space-4); } .card--row .seg button { min-width: 3rem; } }
+.menu__foot { padding: var(--space-5) 0 var(--space-8); color: var(--color-muted); font-size: var(--text-fine); }
+.no-prices [data-price] { display: none !important; }
+
+/* ---------- 32 vs 45 ---------- */
+.size { position: relative; padding: var(--space-8) 0; background: var(--color-panel); overflow: hidden; }
+.bigword { font-family: var(--font-display); font-stretch: var(--stretch-wide); font-weight: 1000; text-transform: uppercase; font-size: var(--text-bigword); line-height: 1.02; letter-spacing: -.01em; }
+.size__lead { margin-top: var(--space-4); max-width: 34rem; font-size: var(--text-body-lg); }
+.size__grid { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+@media (min-width: 64rem) { .size__grid { grid-template-columns: minmax(0, 1.5fr) minmax(0, 1fr); align-items: end; gap: var(--space-7); } }
+.stage { position: relative; width: min(100%, 50rem); aspect-ratio: 1; margin-inline: auto; display: grid; place-items: center; }
+.stage .pz { width: 84%; margin: 0; }
+.stage .pz__ghost span { background: var(--color-panel); font-size: 1.25rem; top: -.1rem; bottom: auto; transform: translate(-50%, -50%); }
+.stage .disc { transition-duration: .7s; }
+.dim { position: absolute; left: 8%; right: 8%; bottom: 0; height: 1.75rem; transition: left .7s var(--ease-out-expo), right .7s var(--ease-out-expo); }
+[data-size="32"] .dim { left: 20.14%; right: 20.14%; }
+.dim::before { content: ""; position: absolute; left: 0; right: 0; top: 50%; height: 1px; background: var(--color-gold); }
+.dim::after { content: ""; position: absolute; inset: 0; border-left: 1px solid var(--color-gold); border-right: 1px solid var(--color-gold); }
+.dim span { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); padding: 0 .5rem; background: var(--color-panel);
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; font-size: 1.5rem; color: var(--color-gold); }
+.ctrl { display: grid; gap: var(--space-4); }
+.ctrl__row { display: flex; flex-wrap: wrap; gap: var(--space-3); align-items: center; }
+.pick { appearance: none; min-height: 3.25rem; min-width: 14rem; padding: 0 2.5rem 0 var(--space-4); border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-ink) no-repeat right .9rem center / .9rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%23B59643' stroke-width='2'/%3E%3C/svg%3E");
+  color: var(--color-cream); font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 800; font-size: 1.375rem; text-transform: uppercase; }
+.read { display: grid; grid-template-columns: repeat(3, auto); justify-content: start; gap: var(--space-5) var(--space-6); padding-top: var(--space-5); border-top: 1px solid var(--color-line); }
+.read dt { font-size: var(--text-fine); color: var(--color-muted); }
+.read dd { font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; font-size: clamp(2rem, 3.4vw, 3rem); line-height: 1; color: var(--color-cream); font-variant-numeric: tabular-nums; white-space: nowrap; }
+.read dd.gold { color: var(--color-gold); font-size: clamp(2.75rem, 5vw, 4.5rem); }
+.read small { font-size: .45em; margin-left: .12em; }
+.read > div:first-child { grid-column: 1 / -1; }
+.read dd.duo { display: flex; align-items: baseline; gap: .12em; font-size: var(--text-price); line-height: .85; color: var(--color-muted); }
+.duo__arrow { align-self: center; font-size: .5em; color: var(--color-gold); padding-inline: .1em; }
+.duo small { color: var(--color-gold); }
+.size [data-r-p32], .size [data-r-p45] { transition: color .4s; }
+.size[data-size="32"] [data-r-p32], .size[data-size="45"] [data-r-p45] { color: var(--color-gold); }
+.size__note { font-size: var(--text-fine); color: var(--color-muted); }
+@media (max-width: 30rem) { .read { grid-template-columns: auto auto; } }
+@media (min-width: 64rem) { .ctrl { padding-bottom: 3.5rem; } } /* ends level with the dimension line */
+
+/* ---------- why: big words ---------- */
+.crisp { position: relative; min-height: clamp(26rem, 70vh, 44rem); display: grid; align-items: end; overflow: hidden; }
+.crisp img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 60% 50%; }
+.crisp::before { content: ""; position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to top, var(--color-ink) 0%, color-mix(in srgb, var(--color-ink) 70%, transparent) 38%, transparent 75%); }
+.crisp__txt { position: relative; z-index: 2; padding-bottom: var(--space-7); }
+.crisp__txt p { margin-top: var(--space-3); max-width: 30rem; font-size: var(--text-body-lg); }
+/* the one colour-field beat: solid gold, ink type, one big word per block */
+.facts { background: var(--color-gold); color: var(--color-on-gold); }
+.fact { min-height: clamp(18rem, 48vh, 38rem); display: grid; align-content: center; padding-block: var(--space-8); }
+.fact + .fact { border-top: 1px solid color-mix(in srgb, var(--color-on-gold) 22%, transparent); }
+.fact p { margin-top: var(--space-4); max-width: 28rem; font-size: var(--text-body-lg); font-weight: 600; color: var(--color-on-gold); }
+.fact .bigword { font-size: clamp(2.4rem, 12.4vw, 4.5rem); line-height: 1.12; } /* mobile: two lines, "DO / PŮLNOCI" */
+@media (min-width: 56rem) { .fact { min-height: clamp(20rem, 60vh, 38rem); } .fact .bigword { font-size: clamp(2.4rem, 8.6vw, 8.5rem); } .fact--end { justify-items: end; text-align: right; } }
+
+/* ---------- how ---------- */
+.how { padding: var(--space-8) 0; }
+.how__grid { display: grid; gap: var(--space-6); margin-top: var(--space-6); }
+@media (min-width: 64rem) { .how__grid { grid-template-columns: 1.1fr 1fr; align-items: stretch; gap: var(--space-7); } }
+.steps { list-style: none; padding: 0; display: grid; }
+.steps li { display: grid; grid-template-columns: 3.5rem 1fr; gap: var(--space-4); padding: var(--space-5) 0; border-top: 1px solid var(--color-line); }
+.steps li:last-child { border-bottom: 1px solid var(--color-line); }
+.steps__n { font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; font-size: 3.5rem; line-height: .8; color: var(--color-gold); }
+.steps h3 { margin-bottom: var(--space-2); }
+.steps p { color: var(--color-muted); }
+.how__photo { position: relative; min-height: 18rem; overflow: hidden; }
+.how__photo img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: 58% 70%; }
+
+/* ---------- hours ---------- */
+.hours { padding: var(--space-8) 0; background: var(--color-panel); }
+.hours__grid { display: grid; gap: var(--space-7); margin-top: var(--space-6); }
+@media (min-width: 64rem) { .hours__grid { grid-template-columns: 1fr 1fr; } }
+.week { width: 100%; border-collapse: collapse; }
+.week th, .week td { padding: var(--space-3) 0; border-bottom: 1px solid var(--color-line); text-align: left; }
+.week th { font-weight: 600; color: var(--color-muted); }
+.week td { text-align: right; font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; font-size: 1.75rem; font-variant-numeric: tabular-nums; }
+.week tr.is-today th, .week tr.is-today td { color: var(--color-gold); }
+.week tr.is-today th::after { content: "(" attr(data-today) ")"; margin-left: var(--space-2); font-size: .875rem; }
+.where p + p { margin-top: var(--space-4); }
+.where .addr { font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase; font-size: clamp(1.75rem, 3vw, 2.5rem); line-height: 1; }
+.where .tel { display: inline-block; margin-top: var(--space-2); font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; font-size: clamp(2rem, 4vw, 3.25rem); color: var(--color-gold); text-decoration: none; }
+.where .muted { max-width: 30rem; }
+
+/* ---------- faq ---------- */
+.faq { padding: var(--space-8) 0; }
+.faq__list { margin-top: var(--space-6); border-top: 1px solid var(--color-line); max-width: 56rem; }
+.faq details { border-bottom: 1px solid var(--color-line); }
+.faq summary { list-style: none; display: flex; justify-content: space-between; align-items: center; gap: var(--space-4); padding: var(--space-4) 0; cursor: pointer;
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase; font-size: clamp(1.375rem, 2.2vw, 1.875rem); line-height: 1; }
+.faq summary::-webkit-details-marker { display: none; }
+.faq summary::after { content: "+"; font-size: 1.75rem; color: var(--color-gold); transition: transform .3s; }
+.faq details[open] summary::after { transform: rotate(45deg); }
+.faq details p { padding: 0 0 var(--space-5); max-width: 40rem; color: var(--color-muted); }
+.faq a { color: var(--color-gold); }
+
+/* ---------- footer ---------- */
+.ftr { padding: var(--space-7) 0 calc(var(--space-7) + 4.5rem); border-top: 1px solid var(--color-line); }
+.ftr__grid { display: grid; gap: var(--space-6); }
+@media (min-width: 56rem) { .ftr__grid { grid-template-columns: 1.3fr 1fr 1fr 1fr; } .ftr { padding-bottom: var(--space-7); } }
+.ftr .wm svg { width: 11rem; }
+.ftr h3 { font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 850; text-transform: uppercase; font-size: 1.25rem; color: var(--color-gold); margin-bottom: var(--space-2); }
+.ftr p, .ftr li { color: var(--color-muted); font-size: var(--text-fine); }
+.ftr a { color: var(--color-cream); }
+.ftr a.wm { color: var(--color-gold); }
+.ftr__fine { margin-top: var(--space-6); padding-top: var(--space-4); border-top: 1px solid var(--color-line); display: flex; flex-wrap: wrap; justify-content: space-between; gap: var(--space-3); color: var(--color-muted); font-size: .875rem; }
+
+/* ---------- chrome: sticky bar, fab, menu, chooser ---------- */
+.stick { display: flex; gap: var(--space-2); padding: var(--space-2) var(--gutter) calc(var(--space-2) + env(safe-area-inset-bottom)); background: var(--color-ink); border-top: 1px solid var(--color-line); }
+.stick .btn--gold { flex: 1; min-height: 3.5rem; font-size: 1.5rem; }
+.stick .btn--gold .price-mini { font-size: 1.125rem; opacity: .85; }
+.stick .btn--line { width: 3.5rem; min-height: 3.5rem; padding: 0; }
+
+.mnav { background: var(--color-ink); padding: var(--space-4) var(--gutter) var(--space-7); display: flex; flex-direction: column; }
+.mnav__top { display: flex; align-items: center; justify-content: space-between; height: calc(var(--header-h) - var(--space-4)); }
+.mnav ul { list-style: none; padding: 0; margin-top: var(--space-6); }
+.mnav li a { display: block; padding: var(--space-3) 0; border-bottom: 1px solid var(--color-line); text-decoration: none;
+  font-family: var(--font-display); font-stretch: var(--stretch-condensed); font-weight: 900; text-transform: uppercase; font-size: 2.75rem; line-height: 1; }
+.mnav .btn { margin-top: var(--space-6); }
+.mnav__tel { margin-top: var(--space-4); color: var(--color-gold); font-weight: 700; font-size: 1.25rem; }
+
+.chooser { width: min(100% - 2rem, 30rem); max-height: 90vh; padding: 0; border: 1px solid var(--color-line); border-radius: var(--radius); background: var(--color-panel); color: var(--color-cream); }
+.chooser::backdrop { background: color-mix(in srgb, var(--color-ink) 78%, transparent); }
+.chooser__in { padding: var(--space-5); display: grid; gap: var(--space-4); }
+.chooser__top { display: flex; justify-content: space-between; align-items: start; gap: var(--space-3); }
+.chooser__x { width: 2.75rem; height: 2.75rem; border: 0; background: none; color: var(--color-cream); cursor: pointer; display: grid; place-items: center; }
+.chooser__ctx { color: var(--color-muted); }
+.chooser__ctx b { color: var(--color-cream); }
+.apps { display: grid; gap: var(--space-2); list-style: none; padding: 0; }
+.app { display: flex; align-items: center; justify-content: space-between; gap: var(--space-3); min-height: 4.5rem; padding: 0 var(--space-5); background: var(--color-gold); color: var(--color-on-gold); text-decoration: none; }
+.app:hover { background: var(--color-gold-hi); }
+.app--nolink, .app--nolink:hover { background: transparent; color: var(--color-muted); border: 1px solid var(--color-line); cursor: default; }
+.app__name { font-family: var(--font-display); font-stretch: var(--stretch-wide); font-weight: 1000; font-size: 1.75rem; text-transform: uppercase; }
+.app__go { font-weight: 700; font-size: .9375rem; }
+.chooser__fine { font-size: var(--text-fine); color: var(--color-muted); }
+.chooser__fine a { color: var(--color-gold); font-weight: 700; }
+@media (max-width: 40rem) {
+  .chooser { width: 100%; max-width: none; margin: auto 0 0; border-width: 1px 0 0; }
+}
+
+.sec-h { display: flex; flex-wrap: wrap; align-items: end; justify-content: space-between; gap: var(--space-4); }
+.sec-h p { color: var(--color-muted); max-width: 26rem; }
+</style>
+  <meta name="robots" content="noindex">
+  <meta property="og:title" content="Imperial Pizza — křupavá pizza s rozvozem po Praze 4, od 219 Kč">
+  <meta property="og:description" content="17 pizz ve velikosti 32 a 45 cm. Rozvoz z Chodova, objednávka přes Wolt. Pá a So do půlnoci.">
+  <meta property="og:image" content="og.jpg">
+  <meta name="twitter:card" content="summary_large_image">
+</head>
+<body>
+<a class="k-skip btn btn--gold" href="#menu" data-i18n="skip">Přeskočit na menu</a>
+
+<!-- Brand lockup, reused via <use>. PLACEHOLDER crown: simple inline SVG drawn to echo the storefront crown; replace with the owner's real logo file (see TODO-OWNER.md). -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><symbol id="wm-lock" viewBox="0 0 124 54">
+  <g fill="currentColor"><path d="M50 11.5 47 3l6 4.2L62 1l9 6.2L77 3l-3 8.5z"/><circle cx="47" cy="2.6" r="1.2"/><circle cx="62" cy=".9" r="1.2"/><circle cx="77" cy="2.6" r="1.2"/><rect x="50" y="12.6" width="24" height="1"/></g>
+  <text x="0" y="31" font-size="17" textLength="124" lengthAdjust="spacing">IMPERIAL</text><text x="31" y="52" font-size="17" textLength="62" lengthAdjust="spacing">FOOD</text>
+</symbol></svg>
+<header class="hdr">
+  <div class="k-container hdr__in">
+    <a class="wm" href="#top" aria-label="Imperial Food">
+      <svg class="wm__svg" viewBox="0 0 124 54" aria-hidden="true"><use href="#wm-lock"/></svg>
+      <span class="wm__was" data-i18n="was">dříve<br>Pizza Chef</span>
+    </a>
+    <nav class="hdr__nav" aria-label="Hlavní">
+      <a href="#menu" data-i18n="nav_menu">Menu</a>
+      <a href="#size" data-i18n="nav_size">32 vs 45</a>
+      <a href="#how" data-i18n="nav_how">Jak objednat</a>
+      <a href="#hours" data-i18n="nav_hours">Kdy vozíme</a>
+    </nav>
+    <div class="hdr__end">
+      <a class="hdr__tel" href="tel:+420606810671">+420 606 810 671</a>
+      <div class="lang" role="group" aria-label="Jazyk">
+        <button type="button" data-lang="cs" aria-pressed="true">CS</button><button type="button" data-lang="en" aria-pressed="false">EN</button><button type="button" data-lang="ru" aria-pressed="false">RU</button>
+      </div>
+      <select class="lang-sel" aria-label="Jazyk / Language">
+        <option value="cs">CS</option><option value="en">EN</option><option value="ru">RU</option>
+      </select>
+      <button class="btn btn--gold btn--sm hdr__order" type="button" data-order data-i18n="order">Objednat</button>
+      <button class="burger" type="button" data-menu-open="mnav" aria-label="Menu">
+        <svg class="icon" viewBox="0 0 24 24" width="26" height="26"><path d="M3 7h18M3 12h18M3 17h18"/></svg>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="top">
+  <!-- HERO -->
+  <section class="hero" id="hero" data-section="hero" data-hero>
+    <div class="k-container hero__grid">
+      <div class="hero__text">
+        <p class="status" data-status data-open="true"><span class="status__dot" aria-hidden="true"></span><span data-status-text>Právě vozíme, dnes do 22:00</span></p>
+        <p class="hero__where" data-i18n="where">Rozvoz z Prahy 4 – Chodov</p>
+        <h1 class="t-display" data-reveal="lines" data-reveal-load data-i18n="h1"><span class="line">Křupavá pizza</span> <span class="line">až ke dveřím</span></h1>
+        <div class="hero__offer">
+          <div>
+            <p class="price-big" data-price><span class="price-big__from" data-i18n="from">od</span><span class="price-big__num" data-min-price>219</span><span class="price-big__cur">Kč</span></p>
+            <p class="hero__hook" data-i18n="hook"><b>45 cm = skoro 2× víc pizzy</b>, a stojí jen o 100&nbsp;Kč víc.</p>
+          </div>
+        </div>
+        <div class="hero__cta">
+          <button class="btn btn--gold btn--xl" type="button" data-order data-i18n="order">Objednat</button>
+          <a class="btn btn--line btn--xl hero__tel" href="tel:+420606810671" aria-label="Zavolat +420 606 810 671">
+            <svg class="icon" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg><span class="tel-label" data-i18n="call">Zavolat</span>
+          </a>
+        </div>
+        <p class="hero__apps"><span data-i18n="apps_via">Objednávka přes aplikaci:</span> <b data-app-names>Wolt, foodora, Bolt Food</b></p>
+      </div>
+      <div class="hero__pz" aria-hidden="true">
+        <div class="disc"><img src="media/messicana-45cm.webp" alt="" width="2880" height="1620" fetchpriority="high"></div>
+        <span class="ring"><span class="ring__tag">45 cm</span></span>
+      </div>
+    </div>
+  </section>
+
+  <!-- MENU -->
+  <section class="menu" id="menu" data-section="menu">
+    <div class="sizebar">
+      <div class="k-container mtabs" role="group" aria-label="Menu" data-tabs hidden></div>
+      <div class="k-container sizebar__in" data-sizerow>
+        <span class="sizebar__lbl" data-i18n="size_lbl">Velikost</span>
+        <div class="seg seg--lg" role="group" aria-label="Velikost pizzy" data-global-size>
+          <button type="button" data-set-size="32" aria-pressed="true">32 cm</button><button type="button" data-set-size="45" aria-pressed="false">45 cm</button>
+        </div>
+        <p class="sizebar__hint" data-i18n="size_hint"><span class="hide-sm">Přepne celé menu.<br></span><b>45 cm = 1,98× plochy</b></p>
+        <p class="sizebar__note" data-i18n="price_note">Ceny se mohou v aplikacích lišit.</p>
+      </div>
+    </div>
+    <div class="k-container" data-panel="pizza">
+      <div class="menu__head">
+        <h2 class="t-h2" data-i18n="menu_h">Nejoblíbenější</h2>
+        <p data-i18n="menu_p">Čtyři pizzy, které se ve Woltu objednávají nejvíc.</p>
+      </div>
+      <div class="pop" data-pop></div>
+      <h2 class="t-h2 menu__sub" data-i18n="menu_all">Všechny pizzy</h2>
+      <div class="rows" data-rows></div>
+      <p class="menu__foot" data-i18n="menu_foot">Ceny se mohou v aplikacích lišit. Fotky jsou skutečné pizzy z naší nabídky.</p>
+    </div>
+    <div class="k-container" data-panel="other" hidden>
+      <div class="menu__head"><h2 class="t-h2" data-other-h></h2></div>
+      <div class="rows" data-other-rows></div>
+      <p class="menu__foot" data-i18n="menu_foot_other">Ceny najdete v aplikaci.</p>
+    </div>
+  </section>
+
+  <!-- 32 vs 45 -->
+  <section class="size" id="size" data-section="size" data-size="32">
+    <div class="k-container">
+      <h2 class="bigword gold" data-i18n="size_word">Skoro 2×</h2>
+      <p class="size__lead" data-i18n="size_lead">Pizza 45 cm má 1,98× větší plochu než 32 cm. U každé pizzy v menu stojí o 100 Kč víc. Přepněte a uvidíte rozdíl ve skutečném poměru.</p>
+      <div class="size__grid">
+        <div class="stage" aria-hidden="true">
+          <div class="pz"><span class="pz__ghost"><span>45 cm</span></span><div class="disc"><img data-stage-img src="media/prosciutto-cotto-45cm.webp" alt="" loading="lazy"></div></div>
+          <div class="dim"><span data-dim>32 cm</span></div>
+        </div>
+        <div class="ctrl">
+          <div class="ctrl__row">
+            <label class="k-sr-only" for="pick" data-i18n="pick_lbl">Pizza</label>
+            <select class="pick" id="pick" data-pick></select>
+            <div class="seg seg--lg" role="group" aria-label="Velikost pizzy" data-global-size>
+              <button type="button" data-set-size="32" aria-pressed="true">32 cm</button><button type="button" data-set-size="45" aria-pressed="false">45 cm</button>
+            </div>
+          </div>
+          <dl class="read">
+            <div data-price><dt data-i18n="r_price">Cena 32 → 45 cm</dt><dd class="duo"><span data-r-p32>229</span><span class="duo__arrow" aria-hidden="true">→</span><span data-r-p45>329</span><small>Kč</small></dd></div>
+            <div><dt data-i18n="r_area">Plocha</dt><dd><span data-r-area>804</span><small>cm²</small></dd></div>
+            <div data-price><dt data-i18n="r_per">Za 100 cm²</dt><dd><span data-r-per>28</span><small>Kč</small></dd></div>
+          </dl>
+          <p class="size__note" data-i18n="size_note">Plocha kruhu z průměru, ceny podle menu. Ve 45 cm vychází každý kousek zhruba o čtvrtinu levněji.</p>
+          <div><button class="btn btn--gold btn--xl" type="button" data-order data-order-stage data-i18n="order_this">Objednat tuhle</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WHY -->
+  <section id="why" data-section="why">
+    <div class="crisp">
+      <img src="media/banner-crust-1.webp" alt="Detail propečeného okraje pizzy" loading="lazy" data-i18n-alt="crisp_alt">
+      <div class="k-container crisp__txt">
+        <h2 class="bigword" data-i18n="crisp_w">Křupavá</h2>
+        <p data-i18n="crisp_p">Pizza, která zvedne náladu. Tak ji sami popisujeme a tak ji pečeme.</p>
+      </div>
+    </div>
+    <div class="facts">
+      <div class="k-container fact">
+        <h2 class="bigword" data-i18n="late_w">Do půlnoci</h2>
+        <p data-i18n="late_p">V pátek a v sobotu vozíme až do 24:00. Ostatní dny od 10:00 do 22:00.</p>
+      </div>
+      <div class="k-container fact fact--end">
+        <h2 class="bigword" data-i18n="app_w">V aplikaci</h2>
+        <p data-i18n="app_p">Objednáte ve Woltu, foodoře nebo Boltu, kde už máte adresu i platbu. Cenu dopravy a čas doručení vidíte předem.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOW -->
+  <section class="how" id="how" data-section="how">
+    <div class="k-container">
+      <h2 class="t-h2" data-i18n="how_h">Jak objednat</h2>
+      <div class="how__grid">
+        <ol class="steps">
+          <li><span class="steps__n">1</span><div><h3 class="t-h3" data-i18n="s1_h">Vyberte pizzu a velikost</h3><p data-i18n="s1_p">32 cm pro jednoho, 45 cm, když jste dva a víc.</p></div></li>
+          <li><span class="steps__n">2</span><div><h3 class="t-h3" data-i18n="s2_h">Klikněte na Objednat</h3><p data-i18n="s2_p">Otevře se naše stránka ve Woltu. Tam vyberete, zaplatíte a zadáte adresu.</p></div></li>
+          <li><span class="steps__n">3</span><div><h3 class="t-h3" data-i18n="s3_h">Pizza jede k vám</h3><p data-i18n="s3_p">Kurýr ji přiveze až ke dveřím. Čas doručení ukazuje aplikace.</p></div></li>
+        </ol>
+        <div class="how__photo"><img src="media/box-home-1.webp" alt="Otevřená krabice s pizzou na konferenčním stolku" loading="lazy" data-i18n-alt="box_alt"></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOURS -->
+  <section class="hours" id="hours" data-section="hours">
+    <div class="k-container">
+      <h2 class="t-h2" data-i18n="hours_h">Kdy a odkud vozíme</h2>
+      <div class="hours__grid">
+        <table class="week">
+          <caption class="k-sr-only" data-i18n="hours_cap">Otevírací doba rozvozu</caption>
+          <tbody>
+            <tr data-days="1,2,3,4" ><th scope="row" data-today="dnes" data-i18n="d_mt">Pondělí až čtvrtek</th><td>10:00–22:00</td></tr>
+            <tr data-days="5,6" ><th scope="row" data-today="dnes" data-i18n="d_fs">Pátek a sobota</th><td>10:00–24:00</td></tr>
+            <tr data-days="0" ><th scope="row" data-today="dnes" data-i18n="d_su">Neděle</th><td>10:00–22:00</td></tr>
+          </tbody>
+        </table>
+        <div class="where">
+          <p class="muted" data-i18n="kitchen_lbl">Kuchyně, odkud pizza vyjíždí</p>
+          <p class="addr">Krejnická 2021/1<br>Praha 4 – Chodov</p>
+          <p class="muted" data-i18n="zone_p">Jsme jen rozvoz, bez výdejního okénka. Kam až vozíme, kolik stojí doprava a jaká je minimální objednávka, vám ukáže aplikace po zadání adresy.</p>
+          <p><span class="muted" data-i18n="ask">Otázka nebo velká objednávka?</span><br><a class="tel" href="tel:+420606810671">+420 606 810 671</a></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="faq" id="faq" data-section="faq">
+    <div class="k-container">
+      <h2 class="t-h2" data-i18n="faq_h">Časté otázky</h2>
+      <div class="faq__list">
+        <details><summary data-i18n="q1">Kde můžu objednat?</summary><p data-i18n="a1">Ve Woltu. Tlačítko Objednat vás přenese rovnou na naši stránku. Přímo na webu objednávky nepřijímáme.</p></details>
+        <details><summary data-i18n="q2">Proč je cena v aplikaci jiná?</summary><p data-i18n="a2">Tady jsou naše běžné ceny. Aplikace mívají vlastní akce a poplatky, proto se cena může lišit. Platí ta, kterou vidíte v aplikaci.</p></details>
+        <details><summary data-i18n="q3">Kam vozíte a kolik stojí doprava?</summary><p data-i18n="a3">Vaříme v Praze 4 na Chodově. Zónu, cenu dopravy a minimální objednávku vám po zadání adresy ukáže aplikace.</p></details>
+        <details><summary data-i18n="q4">Kde najdu alergeny?</summary><p data-i18n="a4">U každé pizzy v aplikaci. Když si nejste jistí, zavolejte nám na <a href="tel:+420606810671">+420 606 810 671</a>.</p></details>
+        <details><summary data-i18n="q5">Objednávka pro firmu nebo oslavu?</summary><p data-i18n="a5">Zavolejte nám předem na <a href="tel:+420606810671">+420 606 810 671</a> a domluvíme se.</p></details>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="ftr" data-section="footer">
+  <div class="k-container">
+    <div class="ftr__grid">
+      <div>
+        <a class="wm" href="#top" aria-label="Imperial Food"><svg class="wm__svg" viewBox="0 0 124 54" aria-hidden="true"><use href="#wm-lock"/></svg></a>
+        <p style="margin-top: var(--space-3)" data-i18n="ftr_was">Dříve Pizza Chef. Stejná kuchyně, nové jméno.</p>
+      </div>
+      <div><h3 data-i18n="ftr_k">Kuchyně</h3><p>Krejnická 2021/1<br>148 00 Praha 4 – Chodov</p><p data-i18n="ftr_only">Jen rozvoz</p></div>
+      <div><h3 data-i18n="ftr_h">Rozvoz</h3><p data-i18n="ftr_hours">Po–Čt a Ne 10:00–22:00<br>Pá–So 10:00–24:00</p></div>
+      <div><h3 data-i18n="ftr_c">Kontakt</h3><p><a href="tel:+420606810671">+420 606 810 671</a></p><p><span data-i18n="apps_via">Objednávka přes aplikaci:</span> <span data-app-names>Wolt, foodora, Bolt Food</span></p></div>
+    </div>
+    <div class="ftr__fine"><span>Imperial Building group</span><span data-i18n="ftr_fine">Ceny se mohou v aplikacích lišit.</span></div>
+  </div>
+</footer>
+
+<!-- mobile sticky order bar -->
+<div class="stick" data-sticky-cta data-mobile-only>
+  <a class="btn btn--line" href="tel:+420606810671" aria-label="Zavolat +420 606 810 671"><svg class="icon" viewBox="0 0 24 24"><path d="M5 3h4l2 5-2.5 1.5a11 11 0 0 0 6 6L16 13l5 2v4a2 2 0 0 1-2 2A16 16 0 0 1 3 5a2 2 0 0 1 2-2"/></svg></a>
+  <button class="btn btn--gold" type="button" data-order><span data-i18n="order">Objednat</span> <span class="price-mini" data-price><span data-i18n="from">od</span> <span data-min-price>219</span> Kč</span></button>
+</div>
+
+<!-- no desktop floating call: the sticky header already carries the number and Objednat -->
+
+<!-- mobile full-screen menu -->
+<div id="mnav" class="mnav" data-menu hidden role="dialog" aria-modal="true" aria-label="Menu">
+  <div class="mnav__top">
+    <span class="wm"><svg class="wm__svg" viewBox="0 0 124 54" aria-hidden="true"><use href="#wm-lock"/></svg></span>
+    <button class="burger" type="button" data-menu-close aria-label="Zavřít"><svg class="icon" viewBox="0 0 24 24" width="26" height="26"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+  </div>
+  <ul>
+    <li><a href="#menu" data-i18n="nav_menu">Menu</a></li>
+    <li><a href="#size" data-i18n="nav_size">32 vs 45</a></li>
+    <li><a href="#how" data-i18n="nav_how">Jak objednat</a></li>
+    <li><a href="#hours" data-i18n="nav_hours">Kdy vozíme</a></li>
+    <li><a href="#faq" data-i18n="nav_faq">Otázky</a></li>
+  </ul>
+  <button class="btn btn--gold btn--xl" type="button" data-order data-menu-close data-i18n="order">Objednat</button>
+  <a class="mnav__tel" href="tel:+420606810671">+420 606 810 671</a>
+</div>
+
+<!-- order chooser -->
+<dialog class="chooser" id="order" aria-labelledby="order-title">
+  <div class="chooser__in">
+    <div class="chooser__top">
+      <h2 class="t-h2" id="order-title" style="font-size: clamp(2.25rem, 4vw, 3rem)" data-i18n="ch_h">Kde objednáte?</h2>
+      <button class="chooser__x" type="button" data-close aria-label="Zavřít"><svg class="icon" viewBox="0 0 24 24" width="24" height="24"><path d="M5 5l14 14M19 5L5 19"/></svg></button>
+    </div>
+    <p class="chooser__ctx" data-ctx hidden></p>
+    <ul class="apps" data-apps></ul>
+    <p class="chooser__fine" data-i18n="ch_fine">Otevře se stránka Imperial Pizza v aplikaci. Pizzu i velikost vyberete tam, ceny se mohou lišit.</p>
+    <p class="chooser__fine"><span data-i18n="ch_call">Raději telefonem?</span> <a href="tel:+420606810671">+420 606 810 671</a></p>
+  </div>
+</dialog>
+
+<script src="menu.data.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.13.0/dist/SplitText.min.js"></script>
+<script src="kit/kit.js"></script>
+<script>
+(() => {
+  const M = window.MENU;
+  const $ = (s, r = document) => r.querySelector(s);
+  const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+
+  /* ---------- i18n (cs is read from the DOM) ---------- */
+  const DICT = {
+    en: {
+      skip: "Skip to menu", was: "formerly<br>Pizza Chef", nav_menu: "Menu", nav_size: "32 vs 45", nav_how: "How to order", nav_hours: "Hours", nav_faq: "Questions",
+      order: "Order", call: "Call", from: "from", where: "Delivering from Prague 4 – Chodov",
+      h1: '<span class="line">Crispy pizza</span> <span class="line">to your door</span>',
+      hook: "<b>45 cm = almost twice the pizza</b>, for just 100&nbsp;Kč more.",
+      apps_via: "Order in the app:",
+      size_lbl: "Size", size_hint: "<span class=\"hide-sm\">Switches the whole menu.<br></span><b>45 cm = 1.98× the area</b>", price_note: "Prices in the apps may differ.",
+      menu_h: "Most popular", menu_p: "The four pizzas people order most on Wolt.", menu_all: "All pizzas",
+      menu_foot: "Prices in the apps may differ. Photos show real pizzas from our menu.",
+      size_word: "Nearly 2×", size_lead: "A 45 cm pizza has 1.98× the area of a 32 cm one. On every pizza in the menu it costs 100 Kč more. Flip the switch to see the difference at true scale.",
+      pick_lbl: "Pizza", r_price: "Price 32 → 45 cm", r_area: "Area", r_per: "Per 100 cm²",
+      size_note: "Circle area from the diameter, prices from the menu. In 45 cm every bite comes out roughly a quarter cheaper.",
+      order_this: "Order this one",
+      crisp_w: "Crispy", crisp_p: "Pizza to lift your spirits. That's how we describe it, and that's how we bake it.", crisp_alt: "Close-up of a baked pizza rim",
+      late_w: "Till midnight", late_p: "On Friday and Saturday we deliver until 24:00. Other days from 10:00 to 22:00.",
+      app_w: "In the app", app_p: "Order on Wolt, foodora or Bolt Food, wherever your address and payment are already saved. You see the delivery fee and time before you pay.",
+      how_h: "How to order", s1_h: "Pick a pizza and size", s1_p: "32 cm for one, 45 cm when there are two or more of you.",
+      s2_h: "Tap Order", s2_p: "Our page on Wolt opens. Choose, pay and enter your address there.", s3_h: "Pizza is on its way", s3_p: "A courier brings it to your door. The app shows the delivery time.",
+      box_alt: "Open pizza box on a coffee table",
+      hours_h: "When and where from", hours_cap: "Delivery hours", d_mt: "Monday to Thursday", d_fs: "Friday and Saturday", d_su: "Sunday",
+      kitchen_lbl: "The kitchen your pizza leaves from", zone_p: "Delivery only, no pick-up counter. How far we deliver, the delivery fee and the minimum order are shown in the app once you enter your address.",
+      ask: "A question or a large order?",
+      faq_h: "Questions",
+      q1: "Where can I order?", a1: "On Wolt. The Order button takes you straight to our page. We don't take orders on this website.",
+      q2: "Why is the price in the app different?", a2: "These are our regular prices. Apps run their own deals and fees, so the price can differ. The price in the app is the one that counts.",
+      q3: "Where do you deliver and what does it cost?", a3: "We cook in Prague 4, Chodov. The app shows the zone, delivery fee and minimum order once you enter your address.",
+      q4: "Where can I find allergens?", a4: 'With each pizza in the app. If you\'re not sure, call us on <a href="tel:+420606810671">+420 606 810 671</a>.',
+      q5: "Ordering for an office or a party?", a5: 'Call us in advance on <a href="tel:+420606810671">+420 606 810 671</a> and we\'ll sort it out.',
+      ftr_was: "Formerly Pizza Chef. Same kitchen, new name.", ftr_k: "Kitchen", ftr_only: "Delivery only", ftr_h: "Delivery", ftr_hours: "Mon–Thu and Sun 10:00–22:00<br>Fri–Sat 10:00–24:00", ftr_c: "Contact", ftr_fine: "Prices in the apps may differ.",
+      menu_foot_other: "Prices are shown in the app.", ch_h: "Where do you order?", ch_fine: "Imperial Pizza's page opens in the app. Choose the pizza and size there; prices may differ.", ch_call: "Prefer the phone?",
+    },
+    ru: {
+      skip: "Перейти к меню", was: "раньше<br>Pizza Chef", nav_menu: "Меню", nav_size: "32 или 45", nav_how: "Как заказать", nav_hours: "Часы", nav_faq: "Вопросы",
+      order: "Заказать", call: "Позвонить", from: "от", where: "Доставка из Праги 4 – Ходов",
+      h1: '<span class="line">Хрустящая</span> <span class="line">пицца к двери</span>',
+      hook: "<b>45 см — почти вдвое больше пиццы</b>, а дороже всего на 100&nbsp;Kč.",
+      apps_via: "Заказ через приложение:",
+      size_lbl: "Размер", size_hint: "<span class=\"hide-sm\">Переключает всё меню.<br></span><b>45 см = 1,98× площади</b>", price_note: "Цены в приложениях могут отличаться.",
+      menu_h: "Самые популярные", menu_p: "Четыре пиццы, которые чаще всего заказывают в Wolt.", menu_all: "Все пиццы",
+      menu_foot: "Цены в приложениях могут отличаться. На фото настоящие пиццы из нашего меню.",
+      size_word: "Почти 2×", size_lead: "У пиццы 45 см площадь в 1,98 раза больше, чем у 32 см. В меню она всегда дороже ровно на 100 Kč. Переключите и посмотрите разницу в реальном масштабе.",
+      pick_lbl: "Пицца", r_price: "Цена 32 → 45 см", r_area: "Площадь", r_per: "За 100 см²",
+      size_note: "Площадь круга по диаметру, цены по меню. В 45 см каждый кусок выходит примерно на четверть дешевле.",
+      order_this: "Заказать эту",
+      crisp_w: "Хрустящая", crisp_p: "Пицца, которая поднимает настроение. Так мы её описываем и так печём.", crisp_alt: "Крупный план запечённого края пиццы",
+      late_w: "До полуночи", late_p: "В пятницу и субботу возим до 24:00. В остальные дни с 10:00 до 22:00.",
+      app_w: "В приложении", app_p: "Заказывайте в Wolt, foodora или Bolt Food, где уже есть ваш адрес и оплата. Стоимость и время доставки видны заранее.",
+      how_h: "Как заказать", s1_h: "Выберите пиццу и размер", s1_p: "32 см на одного, 45 см, если вас двое и больше.",
+      s2_h: "Нажмите «Заказать»", s2_p: "Откроется наша страница в Wolt. Там выберете, оплатите и укажете адрес.", s3_h: "Пицца едет к вам", s3_p: "Курьер привезёт её прямо к двери. Время доставки показывает приложение.",
+      box_alt: "Открытая коробка с пиццей на журнальном столике",
+      hours_h: "Когда и откуда возим", hours_cap: "Часы доставки", d_mt: "Понедельник — четверг", d_fs: "Пятница и суббота", d_su: "Воскресенье",
+      kitchen_lbl: "Кухня, откуда выезжает пицца", zone_p: "Только доставка, без самовывоза. Куда возим, сколько стоит доставка и какой минимальный заказ, покажет приложение по вашему адресу.",
+      ask: "Вопрос или большой заказ?",
+      faq_h: "Вопросы",
+      q1: "Где заказать?", a1: "В Wolt. Кнопка «Заказать» ведёт прямо на нашу страницу. На сайте заказы не принимаем.",
+      q2: "Почему в приложении другая цена?", a2: "Здесь наши обычные цены. У приложений свои акции и сборы, поэтому цена может отличаться. Действует цена в приложении.",
+      q3: "Куда возите и сколько стоит доставка?", a3: "Готовим в Праге 4, на Ходове. Зону, стоимость доставки и минимальный заказ приложение покажет по вашему адресу.",
+      q4: "Где посмотреть аллергены?", a4: 'У каждой пиццы в приложении. Если сомневаетесь, позвоните: <a href="tel:+420606810671">+420 606 810 671</a>.',
+      q5: "Заказ для офиса или праздника?", a5: 'Позвоните заранее: <a href="tel:+420606810671">+420 606 810 671</a>, договоримся.',
+      ftr_was: "Раньше Pizza Chef. Та же кухня, новое имя.", ftr_k: "Кухня", ftr_only: "Только доставка", ftr_h: "Доставка", ftr_hours: "Пн–Чт и Вс 10:00–22:00<br>Пт–Сб 10:00–24:00", ftr_c: "Контакты", ftr_fine: "Цены в приложениях могут отличаться.",
+      menu_foot_other: "Цены смотрите в приложении.", ch_h: "Где заказать?", ch_fine: "Откроется страница Imperial Pizza в приложении. Пиццу и размер выберете там, цены могут отличаться.", ch_call: "Удобнее по телефону?",
+    },
+  };
+  const T = { // strings built in JS
+    cs: { open: (c) => `Právě vozíme, dnes ${c === 24 ? "do půlnoci" : "do " + c + ":00"}`, before: (o) => `Zavřeno, otevíráme v ${o}:00`, after: (o) => `Zavřeno, zítra od ${o}:00`,
+      veg: "bez masa", tab: { pizza: "Pizza", sides: "Přílohy", drinks: "Nápoje" }, inapp: "cena v aplikaci", spicy: "pálivá", order: "Objednat", size: "Velikost", ghost: "45 cm", ctx: (n, s, p) => `Vybráno: <b>${n}, ${s} cm</b>${p ? `, ${p} Kč` : ""}.`, today: "dnes" },
+    en: { open: (c) => `Delivering now, until ${c === 24 ? "midnight" : c + ":00"} today`, before: (o) => `Closed, we open at ${o}:00`, after: (o) => `Closed, back tomorrow at ${o}:00`,
+      veg: "meat-free", tab: { pizza: "Pizza", sides: "Sides", drinks: "Drinks" }, inapp: "price in the app", spicy: "spicy", order: "Order", size: "Size", ghost: "45 cm", ctx: (n, s, p) => `You picked <b>${n}, ${s} cm</b>${p ? `, ${p} Kč` : ""}.`, today: "today" },
+    ru: { open: (c) => `Сейчас возим, сегодня ${c === 24 ? "до полуночи" : "до " + c + ":00"}`, before: (o) => `Закрыто, откроемся в ${o}:00`, after: (o) => `Закрыто, завтра с ${o}:00`,
+      veg: "без мяса", tab: { pizza: "Пицца", sides: "Гарниры", drinks: "Напитки" }, inapp: "цена в приложении", spicy: "острая", order: "Заказать", size: "Размер", ghost: "45 см", ctx: (n, s, p) => `Вы выбрали: <b>${n}, ${s} см</b>${p ? `, ${p} Kč` : ""}.`, today: "сегодня" },
+  };
+  const params = new URLSearchParams(location.search);
+  let lang = params.get("lang") || localStorage.getItem("ip-lang") || "cs";
+  if (!T[lang]) lang = "cs";
+  let size = params.get("size") === "45" ? "45" : "32";
+  const CS = {};
+  $$("[data-i18n]").forEach((el) => { const k = el.dataset.i18n; if (!(k in CS)) CS[k] = el.innerHTML; });
+  $$("[data-i18n-alt]").forEach((el) => { CS[el.dataset.i18nAlt] = el.alt; });
+
+  function applyLang(l, first) {
+    lang = l; localStorage.setItem("ip-lang", l);
+    document.documentElement.lang = l;
+    const d = l === "cs" ? CS : DICT[l];
+    $$("[data-i18n]").forEach((el) => {
+      const v = d[el.dataset.i18n] ?? CS[el.dataset.i18n];
+      if (el.matches("[data-reveal]")) { if (!first) { el.innerHTML = v; window.Kit?.resplit?.(el); } else if (l !== "cs") el.innerHTML = v; }
+      else el.innerHTML = v;
+    });
+    $$("[data-i18n-alt]").forEach((el) => { el.alt = d[el.dataset.i18nAlt] ?? CS[el.dataset.i18nAlt]; });
+    $$("[data-lang]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.lang === l)));
+    $(".lang-sel").value = l;
+    $$("[data-set-size]").forEach((b) => (b.textContent = b.dataset.setSize + (l === "ru" ? " см" : " cm")));
+    $$(".week th").forEach((th) => th.dataset.today = T[l].today);
+    renderMenu(); renderPick(); status(); prices();
+  }
+
+  /* ---------- prices / apps ---------- */
+  const minPrice = Math.min(...M.pizzas.map((p) => p.p32));
+  function prices() {
+    document.body.classList.toggle("no-prices", !M.showPrices);
+    $$("[data-min-price]").forEach((el) => (el.textContent = minPrice));
+    $$("[data-app-names]").forEach((el) => (el.textContent = M.apps.map((a) => a.name).join(", ")));
+  }
+
+  /* ---------- menu ---------- */
+  const ICON = {
+    veg: '<svg class="icon" viewBox="0 0 24 24"><path d="M5 19c0-8 5-13 14-14-1 9-6 14-14 14zM5 19l7-7"/></svg>',
+    spicy: '<svg class="icon" viewBox="0 0 24 24"><path d="M15 6c3 1 4 4 3 7-2 5-8 8-13 7 5-2 7-6 8-10 .3-2 1-3 2-4zM15 6c0-2 1-3 3-3"/></svg>',
+  };
+  const priceOf = (p, s) => (s === "45" ? p.p45 : p.p32);
+  function photo(p, ghostLabel) {
+    return `<div class="pz"><span class="pz__ghost">${ghostLabel ? `<span>${T[lang].ghost}</span>` : ""}</span><div class="disc"><img src="${p.photo}" alt="Pizza ${p.name}" loading="lazy" width="1200" height="675"></div></div>`;
+  }
+  function seg(s) {
+    return `<div class="seg" role="group" aria-label="${T[lang].size}"><button type="button" data-card-size="32" aria-pressed="${s === "32"}">32</button><button type="button" data-card-size="45" aria-pressed="${s === "45"}">45</button></div>`;
+  }
+  const priceHTML = (p, s) => `<span class="price" data-price><span class="price__num" data-value="${priceOf(p, s)}">${priceOf(p, s)}</span><span class="price__cur">Kč</span></span>`;
+  const tagsHTML = (p) => p.tags.length ? `<p class="tags">${p.tags.map((t) => `<span class="tag tag--${t}">${ICON[t]}${T[lang][t]}</span>`).join("")}</p>` : "";
+  const ingHTML = (p) => (p.ingredients ? `<p class="card__ing t-fine">${p.ingredients[lang]}</p>` : "");
+  function popCard(p) {
+    return `<article class="card card--pop" data-id="${p.id}" data-size="${size}">
+      <div class="card__photo"><h3 class="card__band">${p.name}</h3>${photo(p, true)}</div>
+      <div class="card__body">${tagsHTML(p)}${ingHTML(p)}
+        <div class="card__buy">${priceHTML(p, size)}${seg(size)}</div>
+        <button class="btn btn--gold btn--sm" type="button" data-order="${p.id}">${T[lang].order}</button>
+      </div></article>`;
+  }
+  function rowCard(p) {
+    return `<article class="card card--row" data-id="${p.id}" data-size="${size}">
+      <div class="card__photo">${photo(p, false)}</div>
+      <div class="card__body">
+        <div class="card__head"><h3 class="t-h3">${p.name}</h3>${priceHTML(p, size)}</div>
+        ${tagsHTML(p)}${ingHTML(p)}
+        <div class="card__act">${seg(size)}<button class="btn btn--gold btn--sm" type="button" data-order="${p.id}">${T[lang].order}</button></div>
+      </div></article>`;
+  }
+  const itemName = (p) => (lang === "cs" ? p.name : p[lang] || p.name);
+  function itemCard(p) {
+    return `<article class="card card--row" data-id="${p.id}">
+      <div class="card__photo"><div class="pz"><span class="pz__ghost"></span><div class="disc"><img src="${p.photo}" alt="${itemName(p)}" loading="lazy" width="1200" height="675"></div></div></div>
+      <div class="card__body">
+        <div class="card__head"><h3 class="t-h3">${itemName(p)}</h3>${p.price == null ? `<span class="price--app">${T[lang].inapp}</span>` : `<span class="price"><span class="price__num">${p.price}</span><span class="price__cur">Kč</span></span>`}</div>
+        <div class="card__act"><button class="btn btn--gold btn--sm" type="button" data-order="${p.id}">${T[lang].order}</button></div>
+      </div></article>`;
+  }
+  const CATS = ["pizza", "sides", "drinks"].filter((c) => (c === "pizza" ? M.pizzas : M[c] || []).length);
+  let tab = CATS[0];
+  function renderTabs() {
+    const bar = $("[data-tabs]");
+    bar.hidden = CATS.length < 2;
+    bar.innerHTML = CATS.map((c) => `<button type="button" data-tab="${c}" aria-pressed="${c === tab}">${T[lang].tab[c]}</button>`).join("");
+    $("[data-panel=pizza]").hidden = tab !== "pizza";
+    $("[data-sizerow]").hidden = tab !== "pizza";
+    $("[data-panel=other]").hidden = tab === "pizza";
+    if (tab !== "pizza") {
+      $("[data-other-h]").textContent = T[lang].tab[tab];
+      $("[data-other-rows]").innerHTML = M[tab].map(itemCard).join("");
+      $$("[data-other-rows] .card").forEach((c) => c.classList.add("is-in"));
+    }
+  }
+  let io;
+  function renderMenu() {
+    renderTabs();
+    const pop = M.pizzas.filter((p) => p.popular).sort((a, b) => a.popular - b.popular);
+    const rest = M.pizzas.filter((p) => !p.popular).sort((a, b) => a.p32 - b.p32);
+    $("[data-pop]").innerHTML = pop.map(popCard).join("");
+    $("[data-rows]").innerHTML = rest.map(rowCard).join("");
+    io?.disconnect();
+    if ("IntersectionObserver" in window) {
+      io = new IntersectionObserver((es) => es.forEach((e) => { if (e.isIntersecting) { e.target.classList.add("is-in"); io.unobserve(e.target); } }), { rootMargin: "0px 0px -10% 0px" });
+      $$(".card").forEach((c) => io.observe(c));
+    } else $$(".card").forEach((c) => c.classList.add("is-in"));
+  }
+  function setCardSize(card, s, animate = true) {
+    card.dataset.size = s;
+    const p = M.pizzas.find((x) => x.id === card.dataset.id);
+    $$("[data-card-size]", card).forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.cardSize === s)));
+    const num = $(".price__num", card);
+    if (num) Kit.animateNumber(num, priceOf(p, s), { locale: "cs", duration: animate ? 450 : 0 });
+  }
+  function setSize(s, animate = true) {
+    size = s;
+    $$("[data-set-size]").forEach((b) => b.setAttribute("aria-pressed", String(b.dataset.setSize === s)));
+    $$(".card[data-size]").forEach((c) => setCardSize(c, s, animate));
+    stage(animate);
+  }
+
+  /* ---------- signature: 32 vs 45 ---------- */
+  const sizeSec = $("#size");
+  const pick = $("[data-pick]");
+  function renderPick() {
+    const cur = pick.value || "prosciutto-cotto";
+    pick.innerHTML = M.pizzas.map((p) => `<option value="${p.id}">${p.name}</option>`).join("");
+    pick.value = cur;
+  }
+  function stage(animate = true) {
+    const p = M.pizzas.find((x) => x.id === pick.value) || M.pizzas[0];
+    const img = $("[data-stage-img]");
+    const src = p.hi || p.photo;
+    if (!img.src.endsWith(src.replace("../..", ""))) img.src = src;
+    img.alt = "";
+    sizeSec.dataset.size = size;
+    $("[data-dim]").textContent = size + (lang === "ru" ? " см" : " cm");
+    const area = size === "45" ? 1590 : 804; // π·22.5² ≈ 1590, π·16² ≈ 804
+    const pr = priceOf(p, size);
+    const o = { locale: "cs", duration: animate ? 450 : 0 };
+    Kit.animateNumber($("[data-r-p32]"), p.p32, o);
+    Kit.animateNumber($("[data-r-p45]"), p.p45, o);
+    Kit.animateNumber($("[data-r-area]"), area, o);
+    Kit.animateNumber($("[data-r-per]"), Math.round((pr / area) * 100), o);
+  }
+  pick.addEventListener("change", () => stage(false));
+
+  /* ---------- open-now status (Europe/Prague) ---------- */
+  function status() {
+    const parts = Object.fromEntries(new Intl.DateTimeFormat("en-GB", { timeZone: "Europe/Prague", weekday: "short", hour: "2-digit", minute: "2-digit", hourCycle: "h23" }).formatToParts(new Date()).map((x) => [x.type, x.value]));
+    const day = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"].indexOf(parts.weekday);
+    const h = Number(parts.hour) + Number(parts.minute) / 60;
+    const [o, c] = M.hours[day];
+    const open = h >= o && h < c;
+    const el = $("[data-status]");
+    el.dataset.open = String(open);
+    $("[data-status-text]").textContent = open ? T[lang].open(c) : h < o ? T[lang].before(o) : T[lang].after(M.hours[(day + 1) % 7][0]);
+    $$(".week tr").forEach((tr) => tr.classList.toggle("is-today", tr.dataset.days.split(",").includes(String(day))));
+  }
+  setInterval(status, 60000);
+
+  /* ---------- order chooser ---------- */
+  const dlg = $("#order");
+  $("[data-apps]").innerHTML = M.apps.map((a) => a.url
+    ? `<li><a class="app" href="${a.url}" target="_blank" rel="noopener"><span class="app__name">${a.name}</span><span class="app__go">${lang === "cs" ? "otevřít" : lang === "ru" ? "открыть" : "open"}</span></a></li>`
+    : `<li><span class="app app--nolink" aria-disabled="true"><span class="app__name">${a.name}</span></span></li>`).join(""); // no url yet (TODO owner): shown, not clickable
+  function openOrder(id) {
+    const ctx = $("[data-ctx]");
+    if (id) {
+      const it = [...(M.sides || []), ...(M.drinks || [])].find((x) => x.id === id);
+      if (it) { ctx.innerHTML = `<b>${itemName(it)}</b>`; ctx.hidden = false; $$(".app__go", dlg).forEach((g) => (g.textContent = lang === "cs" ? "otevřít" : lang === "ru" ? "открыть" : "open")); dlg.showModal(); return; }
+      const p = M.pizzas.find((x) => x.id === id);
+      const card = document.querySelector(`.card[data-id="${id}"]`);
+      const s = id === pick.value && !card ? size : card?.dataset.size || size;
+      ctx.innerHTML = T[lang].ctx(p.name, s, M.showPrices ? priceOf(p, s) : null);
+      ctx.hidden = false;
+    } else ctx.hidden = true;
+    $$(".app__go", dlg).forEach((g) => (g.textContent = lang === "cs" ? "otevřít" : lang === "ru" ? "открыть" : "open"));
+    dlg.showModal();
+  }
+  document.addEventListener("click", (e) => {
+    const o = e.target.closest("[data-order]");
+    if (o) { openOrder(o.hasAttribute("data-order-stage") ? pick.value : o.dataset.order || null); return; }
+    const tb = e.target.closest("[data-tab]");
+    if (tb) { tab = tb.dataset.tab; renderTabs(); return; }
+    const gs = e.target.closest("[data-set-size]");
+    if (gs) return setSize(gs.dataset.setSize);
+    const cs = e.target.closest("[data-card-size]");
+    if (cs) return setCardSize(cs.closest(".card"), cs.dataset.cardSize);
+    const l = e.target.closest("[data-lang]");
+    if (l) return applyLang(l.dataset.lang);
+    if (e.target.closest("[data-close]") || e.target === dlg) dlg.close();
+  });
+  $(".lang-sel").addEventListener("change", (e) => applyLang(e.target.value));
+
+  applyLang(lang, true);
+  setSize(size, false);
+})();
+</script>
+<p class="concept-note" style="margin:0;padding:12px 16px 88px;font:12px/1.4 system-ui,sans-serif;text-align:center;opacity:.6">Concept design. Photos are AI-generated placeholders, not real work or people.</p>
+</body>
+</html>
