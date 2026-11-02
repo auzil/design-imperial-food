@@ -1,4 +1,4 @@
-# Imperial Pizza — křupavá pizza s rozvozem po Praze 4, od 219 Kč
+# Imperial Food — křupavá pizza s rozvozem po Praze 4, od 219 Kč
 
 Static concept page exported from site-factory (imperial-pizza / c-convert). Open `index.html` in a browser — no build needed.
 
